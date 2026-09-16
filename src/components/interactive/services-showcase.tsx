@@ -62,7 +62,7 @@ export function ServicesShowcase() {
     if (totalScrollDistance <= 0) return;
 
     // The sticky offset from the top of the viewport where the showcase pins
-    const stickyTopOffset = window.innerWidth >= 1024 ? 96 : 80;
+    const stickyTopOffset = window.innerWidth >= 1024 ? 80 : 64;
     const scrolled = stickyTopOffset - rect.top;
     const progress = Math.max(0, Math.min(1, scrolled / totalScrollDistance));
 
@@ -102,7 +102,7 @@ export function ServicesShowcase() {
     const currentScrollY = window.scrollY || window.pageYOffset;
     const containerTop = rect.top + currentScrollY;
     const totalScrollDistance = containerRef.current.offsetHeight - window.innerHeight;
-    const stickyTopOffset = window.innerWidth >= 1024 ? 96 : 80;
+    const stickyTopOffset = window.innerWidth >= 1024 ? 80 : 64;
 
     const stepDistance = totalScrollDistance / services.length;
     const targetScrollY = containerTop - stickyTopOffset + (index + 0.5) * stepDistance;
@@ -116,7 +116,7 @@ export function ServicesShowcase() {
   return (
     <div ref={containerRef} className="relative h-[450vh] sm:h-[500vh] lg:h-[550vh]">
       {/* Sticky showcase container */}
-      <div className="sticky top-20 lg:top-24">
+      <div className="sticky top-16 lg:top-20">
         <div className="grid items-center gap-8 lg:grid-cols-[.32fr_1.68fr] lg:gap-14">
           {/* Desktop Left Nav Tabs */}
           <div className="hidden lg:block">
@@ -154,8 +154,8 @@ export function ServicesShowcase() {
 
           {/* Showcase Visual with clean image and content section directly BELOW the image */}
           <div className="relative flex flex-col">
-            {/* Image Container */}
-            <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] w-full max-h-[calc(100svh-12rem)] sm:max-h-[calc(100vh-13rem)] overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
+            {/* Image Container with increased height */}
+            <div className="relative aspect-[1/1] sm:aspect-[16/11] lg:aspect-[16/10] xl:aspect-[3/2] w-full max-h-[calc(100svh-11rem)] sm:max-h-[calc(100vh-11.5rem)] overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -188,7 +188,7 @@ export function ServicesShowcase() {
             </div>
 
             {/* Content BELOW Image */}
-            <div className="relative mt-5 sm:mt-6 min-h-[5.5rem] sm:min-h-[4.5rem]">
+            <div className="relative mt-3.5 sm:mt-4 min-h-[5.5rem] sm:min-h-[4.5rem]">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
