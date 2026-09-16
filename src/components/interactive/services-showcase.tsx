@@ -154,8 +154,8 @@ export function ServicesShowcase() {
 
           {/* Showcase Visual with clean image and content section directly BELOW the image */}
           <div className="relative flex flex-col">
-            {/* Image Container with increased height */}
-            <div className="relative aspect-square sm:aspect-16/11 lg:aspect-16/10 xl:aspect-3/2 w-full max-h-[calc(100svh-11rem)] sm:max-h-[calc(100vh-11.5rem)] overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
+            {/* Image Container with 5:4 ratio (height = width * 0.80) */}
+            <div className="relative aspect-5/4 w-full overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
