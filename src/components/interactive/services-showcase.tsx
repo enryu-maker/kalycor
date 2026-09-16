@@ -154,7 +154,7 @@ export function ServicesShowcase() {
 
           {/* Showcase Visual with bottom-left text overlay & bottom-right arrow */}
           <div className="relative">
-            <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full max-h-[calc(100svh-7rem)] sm:max-h-[calc(100vh-8rem)] overflow-hidden rounded-sm bg-background">
+            <div className="relative aspect-[4/5] sm:aspect-[16/10] lg:aspect-[16/9] w-full max-h-[calc(100svh-7rem)] sm:max-h-[calc(100vh-8rem)] overflow-hidden rounded-sm bg-background">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
