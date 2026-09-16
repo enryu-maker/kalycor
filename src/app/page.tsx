@@ -5,7 +5,6 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { WhoWeAreSection } from "@/components/sections/who-we-are-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { EnquirySection } from "@/components/sections/enquiry-section";
-import { ConnectSection } from "@/components/sections/connect-section";
 import { FooterSection } from "@/components/sections/footer-section";
 
 export default function HomePage() {
@@ -18,7 +17,6 @@ export default function HomePage() {
       <WhoWeAreSection />
       <ServicesSection />
       <EnquirySection />
-      <ConnectSection />
       <FooterSection />
     </main>
   );

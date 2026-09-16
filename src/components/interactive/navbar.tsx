@@ -17,7 +17,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navItems = useMemo(() => ["Who We Are", "Services", "Enquiry", "Connect"], []);
+  const navItems = useMemo(() => ["Who We Are", "Services", "Enquiry"], []);
 
   const scrollTo = (id: string) => {
     setMenuOpen(false);
@@ -62,12 +62,12 @@ export function Navbar() {
             ))}
             <Button
               type="button"
-              onClick={() => scrollTo("connect")}
+              onClick={() => scrollTo("enquiry")}
               variant="outline"
               size="sm"
               className="border-primary/60 bg-transparent px-5 text-primary hover:bg-primary hover:text-primary-foreground"
             >
-              Let&apos;s connect <ArrowUpRight className="ml-1 size-3.5" />
+              Make an enquiry <ArrowUpRight className="ml-1 size-3.5" />
             </Button>
           </div>
 

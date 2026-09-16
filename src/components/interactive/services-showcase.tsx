@@ -62,7 +62,7 @@ export function ServicesShowcase() {
     if (totalScrollDistance <= 0) return;
 
     // The sticky offset from the top of the viewport where the showcase pins
-    const stickyTopOffset = window.innerWidth >= 1024 ? 112 : 80;
+    const stickyTopOffset = window.innerWidth >= 1024 ? 96 : 80;
     const scrolled = stickyTopOffset - rect.top;
     const progress = Math.max(0, Math.min(1, scrolled / totalScrollDistance));
 
@@ -102,7 +102,7 @@ export function ServicesShowcase() {
     const currentScrollY = window.scrollY || window.pageYOffset;
     const containerTop = rect.top + currentScrollY;
     const totalScrollDistance = containerRef.current.offsetHeight - window.innerHeight;
-    const stickyTopOffset = window.innerWidth >= 1024 ? 112 : 80;
+    const stickyTopOffset = window.innerWidth >= 1024 ? 96 : 80;
 
     const stepDistance = totalScrollDistance / services.length;
     const targetScrollY = containerTop - stickyTopOffset + (index + 0.5) * stepDistance;
@@ -116,11 +116,11 @@ export function ServicesShowcase() {
   return (
     <div ref={containerRef} className="relative h-[450vh] sm:h-[500vh] lg:h-[550vh]">
       {/* Sticky showcase container */}
-      <div className="sticky top-24 lg:top-28">
-        <div className="grid gap-8 lg:grid-cols-[.32fr_1.68fr] lg:gap-14">
+      <div className="sticky top-20 lg:top-24">
+        <div className="grid items-center gap-8 lg:grid-cols-[.32fr_1.68fr] lg:gap-14">
           {/* Desktop Left Nav Tabs */}
           <div className="hidden lg:block">
-            <div className="space-y-6 pt-4">
+            <div className="space-y-5 xl:space-y-6">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -154,7 +154,7 @@ export function ServicesShowcase() {
 
           {/* Showcase Visual with bottom-left text overlay & bottom-right arrow */}
           <div className="relative">
-            <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-sm bg-background">
+            <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full max-h-[calc(100svh-7rem)] sm:max-h-[calc(100vh-8rem)] overflow-hidden rounded-sm bg-background">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -186,11 +186,11 @@ export function ServicesShowcase() {
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
 
                     {/* Content Overlay: Number & Title at bottom-left, Circular Arrow at bottom-right */}
-                    <div className="pointer-events-none absolute bottom-6 left-6 right-6 flex items-end justify-between sm:bottom-8 sm:left-8 sm:right-8 md:bottom-12 md:left-12 md:right-12">
-                      <div className="max-w-2xl">
+                    <div className="pointer-events-none absolute bottom-4 left-4 right-4 flex items-end justify-between sm:bottom-6 sm:left-6 sm:right-6 md:bottom-8 md:left-8 md:right-8 lg:bottom-10 lg:left-10 lg:right-10 xl:bottom-12 xl:left-12 xl:right-12">
+                      <div className="max-w-2xl pr-4">
                         {/* Service Number above title */}
                         <p
-                          className={`mb-1.5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-all duration-500 ease-out ${
+                          className={`mb-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-all duration-500 ease-out ${
                             isActive ? "translate-y-0 opacity-100 delay-100" : "translate-y-3 opacity-0"
                           }`}
                         >
@@ -199,7 +199,7 @@ export function ServicesShowcase() {
 
                         {/* Service Title */}
                         <h3
-                          className={`display-font text-4xl font-bold tracking-tight text-white transition-all duration-700 ease-out sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] ${
+                          className={`display-font text-3xl font-bold tracking-tight text-white transition-all duration-700 ease-out sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[0.95] ${
                             isActive ? "translate-y-0 opacity-100 delay-200" : "translate-y-4 opacity-0"
                           }`}
                         >
@@ -209,11 +209,11 @@ export function ServicesShowcase() {
 
                       {/* Circular Right Arrow Button */}
                       <span
-                        className={`grid size-11 sm:size-12 shrink-0 place-items-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition-all duration-700 ease-out ${
+                        className={`grid size-10 sm:size-11 md:size-12 shrink-0 place-items-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition-all duration-700 ease-out ${
                           isActive ? "translate-y-0 opacity-100 delay-300 scale-100" : "translate-y-3 opacity-0 scale-90"
                         }`}
                       >
-                        <MoveRight className="size-5" />
+                        <MoveRight className="size-4 sm:size-5" />
                       </span>
                     </div>
                   </div>

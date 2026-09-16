@@ -4,7 +4,6 @@ const exploreLinks = [
   { name: "Who We Are", href: "#who-we-are" },
   { name: "Services", href: "#services" },
   { name: "Enquiry", href: "#enquiry" },
-  { name: "Connect", href: "#connect" },
 ];
 
 const serviceLinks = [
