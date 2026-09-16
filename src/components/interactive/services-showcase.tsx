@@ -155,7 +155,7 @@ export function ServicesShowcase() {
           {/* Showcase Visual with clean image and content section directly BELOW the image */}
           <div className="relative flex flex-col">
             {/* Image Container with increased height */}
-            <div className="relative aspect-[1/1] sm:aspect-[16/11] lg:aspect-[16/10] xl:aspect-[3/2] w-full max-h-[calc(100svh-11rem)] sm:max-h-[calc(100vh-11.5rem)] overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
+            <div className="relative aspect-square sm:aspect-16/11 lg:aspect-16/10 xl:aspect-3/2 w-full max-h-[calc(100svh-11rem)] sm:max-h-[calc(100vh-11.5rem)] overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -188,7 +188,7 @@ export function ServicesShowcase() {
             </div>
 
             {/* Content BELOW Image */}
-            <div className="relative mt-3.5 sm:mt-4 min-h-[5.5rem] sm:min-h-[4.5rem]">
+            <div className="relative mt-3.5 sm:mt-4 min-h-22 sm:min-h-18">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
