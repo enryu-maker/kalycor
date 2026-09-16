@@ -152,9 +152,10 @@ export function ServicesShowcase() {
             </div>
           </div>
 
-          {/* Showcase Visual with bottom-left text overlay & bottom-right arrow */}
-          <div className="relative">
-            <div className="relative aspect-[4/5] sm:aspect-[16/10] lg:aspect-[16/9] w-full max-h-[calc(100svh-7rem)] sm:max-h-[calc(100vh-8rem)] overflow-hidden rounded-sm bg-background">
+          {/* Showcase Visual with clean image and content section directly BELOW the image */}
+          <div className="relative flex flex-col">
+            {/* Image Container */}
+            <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] w-full max-h-[calc(100svh-12rem)] sm:max-h-[calc(100vh-13rem)] overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -181,39 +182,42 @@ export function ServicesShowcase() {
                         data-cursor-label
                       />
                     </div>
+                  </div>
+                );
+              })}
+            </div>
 
-                    {/* Gradient Overlay for high readability at bottom */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-
-                    {/* Content Overlay: Number & Title at bottom-left, Circular Arrow at bottom-right */}
-                    <div className="pointer-events-none absolute bottom-4 left-4 right-4 flex items-end justify-between sm:bottom-6 sm:left-6 sm:right-6 md:bottom-8 md:left-8 md:right-8 lg:bottom-10 lg:left-10 lg:right-10 xl:bottom-12 xl:left-12 xl:right-12">
-                      <div className="max-w-2xl pr-4">
-                        {/* Service Number above title */}
-                        <p
-                          className={`mb-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-all duration-500 ease-out ${
-                            isActive ? "translate-y-0 opacity-100 delay-100" : "translate-y-3 opacity-0"
-                          }`}
-                        >
-                          {service.number}
+            {/* Content BELOW Image */}
+            <div className="relative mt-5 sm:mt-6 min-h-[5.5rem] sm:min-h-[4.5rem]">
+              {services.map((service, index) => {
+                const isActive = activeService === index;
+                return (
+                  <div
+                    key={service.number}
+                    className={`transition-all duration-500 ease-out ${
+                      isActive
+                        ? "relative opacity-100 translate-y-0 z-10"
+                        : "absolute inset-0 opacity-0 translate-y-2 pointer-events-none z-0"
+                    }`}
+                  >
+                    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                      <div className="max-w-2xl pr-2">
+                        <div className="flex items-center gap-3 mb-1.5">
+                          <span className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                            {service.number}
+                          </span>
+                          <span className="text-muted-foreground/40 text-xs">/</span>
+                          <h3 className="display-font text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                            {service.name}
+                          </h3>
+                        </div>
+                        <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
+                          {service.description}
                         </p>
-
-                        {/* Service Title */}
-                        <h3
-                          className={`display-font text-3xl font-bold tracking-tight text-white transition-all duration-700 ease-out sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[0.95] ${
-                            isActive ? "translate-y-0 opacity-100 delay-200" : "translate-y-4 opacity-0"
-                          }`}
-                        >
-                          {service.name}
-                        </h3>
                       </div>
 
-                      {/* Circular Right Arrow Button */}
-                      <span
-                        className={`grid size-10 sm:size-11 md:size-12 shrink-0 place-items-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition-all duration-700 ease-out ${
-                          isActive ? "translate-y-0 opacity-100 delay-300 scale-100" : "translate-y-3 opacity-0 scale-90"
-                        }`}
-                      >
-                        <MoveRight className="size-4 sm:size-5" />
+                      <span className="grid size-11 shrink-0 place-items-center rounded-full border border-primary/50 text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-105">
+                        <MoveRight className="size-5" />
                       </span>
                     </div>
                   </div>
