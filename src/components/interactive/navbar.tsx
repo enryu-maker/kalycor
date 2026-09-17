@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import brandLogo from "@/assets/WhatsApp Image 2026-09-16 at 6.45.46 PM.jpeg";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,22 +32,28 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b border-transparent px-[var(--page-gutter)] transition-all duration-500 ${
-          scrolled ? "nav-scrolled py-4" : "py-6"
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 border-b border-transparent px-[var(--page-gutter)] transition-all duration-500 ${scrolled ? "nav-scrolled py-4" : "py-6"
+          }`}
       >
         <nav className="mx-auto flex max-w-[1600px] items-center justify-between" aria-label="Primary navigation">
           <button
             type="button"
             onClick={() => scrollTo("top")}
-            className="group flex items-center gap-3 text-left cursor-pointer"
-            aria-label="Northstar Group home"
+            className="group flex items-center gap-3.5 text-left cursor-pointer"
+            aria-label="Kalycor Group home"
           >
-            <span className="grid size-9 place-items-center border border-primary text-primary transition-transform duration-500 group-hover:rotate-45">
-              <span className="block size-2 bg-primary" />
-            </span>
-            <span className="display-font text-sm font-bold tracking-[0.2em] text-foreground">
-              NORTHSTAR<span className="text-primary">.</span>
+            <div className="relative h-10 w-12 shrink-0 overflow-hidden rounded-md border border-[#2563eb]/40 bg-[#08162b] shadow-sm transition-transform duration-300 group-hover:scale-105 group-hover:border-[#38bdf8]">
+              <Image
+                src={brandLogo}
+                alt="Kalycor Group Logo"
+                fill
+                className="object-contain p-0.5"
+                sizes="48px"
+                priority
+              />
+            </div>
+            <span className="display-font text-sm font-bold tracking-[0.2em] text-white">
+              KALYCOR<span className="text-[#38bdf8]">.</span>
             </span>
           </button>
 
@@ -55,7 +63,7 @@ export function Navbar() {
                 key={item}
                 type="button"
                 onClick={() => scrollTo(item === "Who We Are" ? "who-we-are" : item.toLowerCase())}
-                className="line-link text-xs uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+                className="line-link text-xs uppercase tracking-[0.14em] text-[#94a3b8] transition-colors hover:text-white cursor-pointer"
               >
                 {item}
               </button>
@@ -65,7 +73,7 @@ export function Navbar() {
               onClick={() => scrollTo("enquiry")}
               variant="outline"
               size="sm"
-              className="border-primary/60 bg-transparent px-5 text-primary hover:bg-primary hover:text-primary-foreground"
+              className="border-[#2563eb] bg-transparent px-5 text-[#38bdf8] hover:bg-[#2563eb] hover:text-white transition-all cursor-pointer"
             >
               Make an enquiry <ArrowUpRight className="ml-1 size-3.5" />
             </Button>
@@ -75,7 +83,7 @@ export function Navbar() {
             type="button"
             variant="ghost"
             size="icon"
-            className="text-foreground md:hidden"
+            className="text-white md:hidden"
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
@@ -86,24 +94,23 @@ export function Navbar() {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`fixed inset-0 z-40 flex flex-col justify-center bg-background px-[var(--page-gutter)] transition-all duration-500 md:hidden ${
-          menuOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#071224] px-[var(--page-gutter)] transition-all duration-500 md:hidden ${menuOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
+          }`}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,color-mix(in_oklch,var(--color-primary)_12%,transparent),transparent_42%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(37,99,235,0.15),transparent_50%)]" />
         <div className="relative space-y-5">
           {navItems.map((item) => (
             <button
               key={item}
               type="button"
               onClick={() => scrollTo(item === "Who We Are" ? "who-we-are" : item.toLowerCase())}
-              className="display-font block text-4xl font-semibold tracking-tight text-foreground transition-colors hover:text-primary text-left cursor-pointer"
+              className="display-font block text-4xl font-semibold tracking-tight text-white transition-colors hover:text-[#38bdf8] text-left cursor-pointer"
             >
               {item}
             </button>
           ))}
         </div>
-        <p className="absolute bottom-8 left-[var(--page-gutter)] eyebrow">Global. Human. Future.</p>
+        <p className="absolute bottom-8 left-[var(--page-gutter)] eyebrow text-[#38bdf8]">Global. Human. Future.</p>
       </div>
     </>
   );

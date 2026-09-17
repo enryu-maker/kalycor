@@ -114,13 +114,13 @@ export function ServicesShowcase() {
   };
 
   return (
-    <div ref={containerRef} className="relative h-[450vh] sm:h-[500vh] lg:h-[550vh]">
+    <div ref={containerRef} className="relative h-[650vh] sm:h-[750vh] lg:h-[850vh]">
       {/* Sticky showcase container */}
       <div className="sticky top-16 lg:top-20">
-        <div className="grid items-center gap-8 lg:grid-cols-[.32fr_1.68fr] lg:gap-14">
+        <div className="grid items-start gap-8 lg:grid-cols-[.28fr_1.72fr] lg:gap-12">
           {/* Desktop Left Nav Tabs */}
-          <div className="hidden lg:block">
-            <div className="space-y-5 xl:space-y-6">
+          <div className="hidden lg:block pt-6">
+            <div className="space-y-6 xl:space-y-7">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -134,14 +134,14 @@ export function ServicesShowcase() {
                   >
                     <span
                       className={`mr-4 font-mono font-medium transition-colors duration-300 ${
-                        isActive ? "text-primary font-bold" : "text-muted-foreground group-hover:text-foreground"
+                        isActive ? "text-[#38bdf8] font-bold" : "text-[#94a3b8] group-hover:text-white"
                       }`}
                     >
                       {service.number}
                     </span>
                     <span
                       className={`transition-colors duration-300 ${
-                        isActive ? "text-foreground font-semibold" : "text-muted-foreground group-hover:text-foreground"
+                        isActive ? "text-white font-semibold" : "text-[#94a3b8] group-hover:text-white"
                       }`}
                     >
                       {service.name}
@@ -153,9 +153,9 @@ export function ServicesShowcase() {
           </div>
 
           {/* Showcase Visual with clean image and content section directly BELOW the image */}
-          <div className="relative flex flex-col">
-            {/* Image Container with 5:4 ratio (height = width * 0.80) */}
-            <div className="relative aspect-5/4 w-full overflow-hidden rounded-sm bg-background border border-border/40 shadow-sm">
+          <div className="relative flex flex-col justify-between">
+            {/* Image Container dynamically filling the screen height */}
+            <div className="relative h-[calc(100vh-17rem)] sm:h-[calc(100vh-16rem)] lg:h-[calc(100vh-14.5rem)] min-h-[300px] max-h-[660px] w-full overflow-hidden rounded-sm bg-[#060e1a] border border-[#1e385c]/60 shadow-xl">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -188,7 +188,7 @@ export function ServicesShowcase() {
             </div>
 
             {/* Content BELOW Image */}
-            <div className="relative mt-3.5 sm:mt-4 min-h-22 sm:min-h-18">
+            <div className="relative mt-4 min-h-[85px] sm:min-h-[75px]">
               {services.map((service, index) => {
                 const isActive = activeService === index;
                 return (
@@ -200,24 +200,24 @@ export function ServicesShowcase() {
                         : "absolute inset-0 opacity-0 translate-y-2 pointer-events-none z-0"
                     }`}
                   >
-                    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                    <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                       <div className="max-w-2xl pr-2">
-                        <div className="flex items-center gap-3 mb-1.5">
-                          <span className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                        <div className="flex items-center gap-3 mb-1">
+                          <span className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#38bdf8]">
                             {service.number}
                           </span>
-                          <span className="text-muted-foreground/40 text-xs">/</span>
-                          <h3 className="display-font text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                          <span className="text-[#94a3b8]/50 text-xs">/</span>
+                          <h3 className="display-font text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white">
                             {service.name}
                           </h3>
                         </div>
-                        <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
+                        <p className="text-xs sm:text-sm lg:text-base leading-relaxed text-[#94a3b8]">
                           {service.description}
                         </p>
                       </div>
 
-                      <span className="grid size-11 shrink-0 place-items-center rounded-full border border-primary/50 text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:scale-105">
-                        <MoveRight className="size-5" />
+                      <span className="grid size-10 sm:size-11 shrink-0 place-items-center rounded-full border border-[#2563eb]/60 text-[#38bdf8] transition-all duration-300 hover:bg-[#2563eb] hover:text-white hover:scale-105">
+                        <MoveRight className="size-4 sm:size-5" />
                       </span>
                     </div>
                   </div>

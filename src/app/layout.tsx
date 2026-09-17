@@ -25,17 +25,17 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Northstar Group — Building a Future of Possibilities",
+  title: "Kalycor Group — Building a Future of Possibilities",
   description: "Creating opportunities that move people, places and markets forward across staffing, real estate, agriculture, trade and security.",
-  authors: [{ name: "Northstar Group" }],
+  authors: [{ name: "Kalycor Group" }],
   openGraph: {
-    title: "Northstar Group — Building a Future of Possibilities",
+    title: "Kalycor Group — Building a Future of Possibilities",
     description: "Creating opportunities that move people, places and markets forward.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Northstar Group — Building a Future of Possibilities",
+    title: "Kalycor Group — Building a Future of Possibilities",
     description: "Creating opportunities that move people, places and markets forward.",
   },
   icons: {

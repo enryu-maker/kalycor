@@ -28,25 +28,41 @@
 
 :root {
   --radius: 0.25rem;
-  --background: oklch(0.13 0.018 70);
-  --foreground: oklch(0.95 0.018 84);
-  --card: oklch(0.17 0.018 70);
-  --card-foreground: oklch(0.95 0.018 84);
-  --popover: oklch(0.17 0.018 70);
-  --popover-foreground: oklch(0.95 0.018 84);
-  --primary: oklch(0.78 0.12 78);
-  --primary-foreground: oklch(0.15 0.018 70);
-  --secondary: oklch(0.2 0.018 70);
-  --secondary-foreground: oklch(0.95 0.018 84);
-  --muted: oklch(0.2 0.018 70);
-  --muted-foreground: oklch(0.68 0.025 78);
-  --accent: oklch(0.78 0.12 78);
-  --accent-foreground: oklch(0.15 0.018 70);
-  --destructive: oklch(0.62 0.18 30);
-  --destructive-foreground: oklch(0.98 0.01 84);
-  --border: oklch(0.95 0.018 84 / 16%);
-  --input: oklch(0.95 0.018 84 / 22%);
-  --ring: oklch(0.78 0.12 78);
+  
+  /* Brand Full Palette Tokens */
+  --brand-navy-deep: #050d1a;
+  --brand-navy: #08162b;
+  --brand-blue-dark: #09182f;
+  --brand-blue-royal: #1d4ed8;
+  --brand-blue-azure: #2563eb;
+  --brand-cyan: #0ea5e9;
+  --brand-cyan-light: #38bdf8;
+  --brand-cool-ice: #f1f5fa;
+  --brand-cool-light: #e4edf6;
+  --brand-cool-slate: #94a3b8;
+  --brand-white: #ffffff;
+  
+  /* Theme Tokens */
+  --background: #08162b;
+  --foreground: #f8fafc;
+  --card: #0c1f3a;
+  --card-foreground: #f8fafc;
+  --popover: #0c1f3a;
+  --popover-foreground: #f8fafc;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #09182f;
+  --secondary-foreground: #f8fafc;
+  --muted: #0d2242;
+  --muted-foreground: #94a3b8;
+  --accent: #0ea5e9;
+  --accent-foreground: #050d1a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(148, 163, 184, 0.16);
+  --input: rgba(148, 163, 184, 0.22);
+  --ring: #2563eb;
+  
   --page-gutter: clamp(1.25rem, 4vw, 4.5rem);
   --display: var(--font-manrope), "Manrope", "DM Sans", sans-serif;
   --serif: var(--font-instrument-serif), "Instrument Serif", Georgia, serif;
@@ -126,8 +142,8 @@ html {
   left: 0;
   bottom: -0.3rem;
   width: 100%;
-  height: 1px;
-  background: var(--color-primary);
+  height: 1.5px;
+  background: var(--brand-blue-royal, #1d4ed8);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.4s ease;
@@ -140,9 +156,11 @@ html {
 }
 
 .nav-scrolled {
-  background: color-mix(in oklch, var(--color-background) 86%, transparent);
-  border-color: var(--color-border);
-  box-shadow: 0 14px 30px color-mix(in oklch, var(--color-background) 24%, transparent);
+  background: rgba(7, 18, 36, 0.90);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 14px 30px rgba(5, 13, 26, 0.4);
 }
 
 .grain::after {
@@ -150,7 +168,7 @@ html {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.06;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
 }
@@ -160,18 +178,14 @@ html {
 }
 
 .hero-vignette {
-  background: linear-gradient(
-      90deg,
-      color-mix(in oklch, var(--color-background) 78%, transparent) 0%,
-      color-mix(in oklch, var(--color-background) 28%, transparent) 58%,
-      color-mix(in oklch, var(--color-background) 72%, transparent) 100%
-    ),
-    linear-gradient(
-      0deg,
-      color-mix(in oklch, var(--color-background) 84%, transparent) 0%,
+  background: linear-gradient(90deg,
+      rgba(7, 18, 36, 0.92) 0%,
+      rgba(7, 18, 36, 0.45) 58%,
+      rgba(7, 18, 36, 0.88) 100%),
+    linear-gradient(0deg,
+      rgba(7, 18, 36, 0.95) 0%,
       transparent 48%,
-      color-mix(in oklch, var(--color-background) 34%, transparent) 100%
-    );
+      rgba(7, 18, 36, 0.60) 100%);
 }
 
 .service-visual {
@@ -184,16 +198,16 @@ html {
 }
 
 .service-nav-item {
-  color: var(--color-muted-foreground);
+  color: var(--brand-cool-slate, #94a3b8);
   transition: color 0.35s ease, padding 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
 .service-nav-item:hover {
-  color: var(--color-foreground);
+  color: #ffffff;
 }
 
 .service-nav-item[data-active="true"] {
-  color: var(--color-foreground);
+  color: #ffffff;
   padding-left: 0.85rem;
 }
 
@@ -203,37 +217,27 @@ html {
   left: 0;
   top: 50%;
   width: 1.75rem;
-  height: 1.5px;
-  background: var(--color-primary);
+  height: 2px;
+  background: var(--brand-blue-azure, #2563eb);
   transform: translate(-2.25rem, -50%);
   animation: fadeIn 0.3s ease-out forwards;
 }
 
 .form-field {
-  border-bottom: 1px solid var(--color-input);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
   transition: border-color 0.35s ease;
 }
 
 .form-field:focus-within {
-  border-color: var(--color-primary);
+  border-color: var(--brand-blue-royal, #1d4ed8);
 }
 
 .form-field input,
 .form-field textarea,
 .form-field select {
   background: transparent;
-  color: var(--color-foreground);
   outline: none;
   width: 100%;
-}
-
-.form-field select option {
-  background: var(--color-background);
-  color: var(--color-foreground);
-}
-
-.footer-word {
-  color: color-mix(in oklch, var(--color-foreground) 9%, transparent);
 }
 
 .cursor-dot {
@@ -241,7 +245,7 @@ html {
   z-index: 70;
   width: 9px;
   height: 9px;
-  border: 1px solid var(--color-primary);
+  border: 1.5px solid var(--brand-cyan, #0ea5e9);
   border-radius: 999px;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -251,7 +255,8 @@ html {
 .cursor-dot.is-hovering {
   width: 64px;
   height: 64px;
-  background: color-mix(in oklch, var(--color-primary) 82%, transparent);
+  background: rgba(29, 78, 216, 0.30);
+  border-color: var(--brand-cyan-light, #38bdf8);
   mix-blend-mode: screen;
 }
 
@@ -262,7 +267,7 @@ html {
   transform: translate(-50%, -50%);
   font-size: 0.55rem;
   letter-spacing: 0.14em;
-  color: var(--color-primary-foreground);
+  color: #ffffff;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -277,6 +282,7 @@ html {
     transform: translateY(42px);
     filter: blur(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -288,12 +294,14 @@ html {
   from {
     transform: scale(1.02) translate3d(0, 0, 0);
   }
+
   to {
     transform: scale(1.09) translate3d(-1.5%, -1%, 0);
   }
 }
 
 @media (max-width: 767px) {
+
   .cursor-dot,
   .cursor-label {
     display: none;
@@ -304,12 +312,10 @@ html {
   }
 
   .hero-vignette {
-    background: linear-gradient(
-      0deg,
-      color-mix(in oklch, var(--color-background) 88%, transparent) 0%,
-      color-mix(in oklch, var(--color-background) 25%, transparent) 70%,
-      color-mix(in oklch, var(--color-background) 38%, transparent) 100%
-    );
+    background: linear-gradient(0deg,
+        color-mix(in oklch, var(--color-background) 88%, transparent) 0%,
+        color-mix(in oklch, var(--color-background) 25%, transparent) 70%,
+        color-mix(in oklch, var(--color-background) 38%, transparent) 100%);
   }
 }
 
