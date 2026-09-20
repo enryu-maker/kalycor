@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import brandLogo from "@/assets/WhatsApp Image 2026-09-16 at 6.45.46 PM.jpeg";
+import brandLogo from "@/assets/logo.png";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,7 +42,7 @@ export function Navbar() {
             className="group flex items-center gap-3.5 text-left cursor-pointer"
             aria-label="Kalycor Group home"
           >
-            <div className="relative h-10 w-12 shrink-0 overflow-hidden rounded-md border border-[#2563eb]/40 bg-[#08162b] shadow-sm transition-transform duration-300 group-hover:scale-105 group-hover:border-[#38bdf8]">
+            <div className="relative h-10 w-12 shrink-0 overflow-hidden rounded-md border border-[#105080]/60 bg-[#082453] shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-[#38bdf8] group-hover:shadow-[0_0_15px_rgba(56,189,248,0.25)]">
               <Image
                 src={brandLogo}
                 alt="Kalycor Group Logo"
@@ -53,7 +53,7 @@ export function Navbar() {
               />
             </div>
             <span className="display-font text-sm font-bold tracking-[0.2em] text-white">
-              KALYCOR<span className="text-[#38bdf8]">.</span>
+              KALYCOR<span className="text-[#66c8f5]">.</span>
             </span>
           </button>
 
@@ -73,7 +73,7 @@ export function Navbar() {
               onClick={() => scrollTo("enquiry")}
               variant="outline"
               size="sm"
-              className="border-[#2563eb] bg-transparent px-5 text-[#38bdf8] hover:bg-[#2563eb] hover:text-white transition-all cursor-pointer"
+              className="border-[#105080] bg-[#0a1c36]/60 px-5 text-[#38bdf8] hover:bg-[#2563eb] hover:border-[#38bdf8] hover:text-white shadow-sm transition-all cursor-pointer backdrop-blur-sm"
             >
               Make an enquiry <ArrowUpRight className="ml-1 size-3.5" />
             </Button>
@@ -83,7 +83,7 @@ export function Navbar() {
             type="button"
             variant="ghost"
             size="icon"
-            className="text-white md:hidden"
+            className="text-white md:hidden hover:bg-[#0a1c36]"
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
@@ -94,10 +94,10 @@ export function Navbar() {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#071224] px-[var(--page-gutter)] transition-all duration-500 md:hidden ${menuOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#071326] px-[var(--page-gutter)] transition-all duration-500 md:hidden ${menuOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
           }`}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(37,99,235,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(16,80,128,0.35),transparent_60%)]" />
         <div className="relative space-y-5">
           {navItems.map((item) => (
             <button

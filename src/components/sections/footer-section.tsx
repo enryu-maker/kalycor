@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import brandLogo from "@/assets/WhatsApp Image 2026-09-16 at 6.45.46 PM.jpeg";
+import brandLogo from "@/assets/logo.png";
 
 const exploreLinks = [
   { name: "Who We Are", href: "#who-we-are" },
@@ -18,7 +18,7 @@ const serviceLinks = [
 
 export function FooterSection() {
   return (
-    <footer className="bg-[#050d1a] px-[var(--page-gutter)] py-16 md:py-24 text-white border-t border-[#1e385c]/40">
+    <footer className="bg-[#050d1a] px-[var(--page-gutter)] py-16 md:py-24 text-white border-t border-[#105080]/40">
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-24 flex flex-col justify-between gap-12 md:flex-row">
           <div>
@@ -26,7 +26,7 @@ export function FooterSection() {
               href="#top"
               className="mb-8 flex items-center gap-3.5 cursor-pointer group w-fit"
             >
-              <div className="relative h-11 w-13 shrink-0 overflow-hidden rounded-md border border-[#2563eb]/40 bg-[#08162b] shadow-sm transition-transform duration-300 group-hover:scale-105 group-hover:border-[#38bdf8]">
+              <div className="relative h-11 w-13 shrink-0 overflow-hidden rounded-md border border-[#105080]/60 bg-[#082453] shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-[#38bdf8] group-hover:shadow-[0_0_15px_rgba(56,189,248,0.25)]">
                 <Image
                   src={brandLogo}
                   alt="Kalycor Group Logo"
@@ -36,7 +36,7 @@ export function FooterSection() {
                 />
               </div>
               <span className="display-font text-sm font-bold tracking-[0.2em] text-white">
-                KALYCOR<span className="text-[#38bdf8]">.</span>
+                KALYCOR<span className="text-[#66c8f5]">.</span>
               </span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-[#94a3b8]">
@@ -87,7 +87,7 @@ export function FooterSection() {
           </div>
         </div>
 
-        <div className="border-t border-[#1e385c]/40 pt-5 text-xs text-[#64748b]">
+        <div className="border-t border-[#105080]/40 pt-5 text-xs text-[#64748b]">
           <div className="flex flex-col justify-between gap-3 md:flex-row">
             <p>© 2026 Kalycor Group. All rights reserved.</p>
             <div className="flex gap-6">
