@@ -198,6 +198,15 @@ html {
   transition: transform 0.8s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .service-visual:hover {
   transform: scale(1.025);
 }
