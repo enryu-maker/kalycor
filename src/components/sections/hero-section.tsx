@@ -1,18 +1,17 @@
 import type { CSSProperties } from "react";
-import Image from "next/image";
 import { ArrowDownRight } from "lucide-react";
-import heroImage from "@/assets/hero-global.jpg";
 
 export function HeroSection() {
   return (
     <section id="top" className="grain relative flex min-h-[100svh] items-end overflow-hidden bg-[#071326]">
-      <Image
-        src={heroImage}
-        alt="Kalycor global operations and architecture"
-        priority
-        fill
-        className="hero-image object-cover object-center"
-        sizes="100vw"
+      <video
+        src="/videos/hero-video.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="absolute inset-0 size-full object-cover object-center pointer-events-none"
       />
       <div className="hero-vignette absolute inset-0" />
       <div className="relative z-10 w-full px-[var(--page-gutter)] pb-12 pt-40 md:pb-16">

@@ -50,7 +50,21 @@ export const services: ServiceItem[] = [
 
 export function ServicesShowcase() {
   const [activeService, setActiveService] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const desktopVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const mobileContainerRef = useRef<HTMLDivElement>(null);
+
+  // Play/pause desktop video based on active service and hover state
+  useEffect(() => {
+    desktopVideoRefs.current.forEach((videoEl, index) => {
+      if (!videoEl) return;
+      if (index === activeService && isHovered) {
+        videoEl.play().catch(() => {});
+      } else {
+        videoEl.pause();
+      }
+    });
+  }, [activeService, isHovered]);
 
   // IntersectionObserver to reveal items smoothly on scroll
   useEffect(() => {
@@ -79,18 +93,16 @@ export function ServicesShowcase() {
     <div>
       {/* ============================================================ */}
       {/* MOBILE / RESPONSIVE VIEW (< 1024px)                          */}
-      {/* Layout: Video > Number (01-05) > Title > Description         */}
+      {/* Layout: Video > Border > Number > Title > Description > Border */}
       {/* ============================================================ */}
-      <div ref={mobileContainerRef} className="space-y-16 lg:hidden">
-        {services.map((service, index) => (
+      <div ref={mobileContainerRef} className="space-y-12 sm:space-y-16 lg:hidden">
+        {services.map((service) => (
           <div
             key={service.number}
-            className={`reveal-on-scroll ${
-              index !== 0 ? "border-t border-[#105080]/40 pt-12" : ""
-            }`}
+            className="reveal-on-scroll"
           >
-            {/* 1. Video Container */}
-            <div className="relative mb-6 aspect-[1.08/1] sm:aspect-[16/10] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_45px_rgba(5,13,26,0.85)]">
+            {/* 1. Video Container with Overlay */}
+            <div className="relative aspect-[1.08/1] sm:aspect-[16/10] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_45px_rgba(5,13,26,0.85)]">
               <video
                 src={service.video}
                 autoPlay
@@ -103,7 +115,7 @@ export function ServicesShowcase() {
               {/* Vignette Gradient Overlay */}
               <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#071326]/85 via-transparent to-transparent" />
 
-              {/* Overlay inside Video */}
+              {/* Overlay inside bottom-left of Video */}
               <div className="pointer-events-none absolute bottom-5 left-5 right-5 z-20 flex items-end justify-between">
                 <div>
                   <p className="mb-1.5 text-xs uppercase tracking-[0.16em] text-[#38bdf8]">
@@ -116,25 +128,31 @@ export function ServicesShowcase() {
               </div>
             </div>
 
-            {/* 2. Number > 3. Title > 4. Description Content Below Video */}
+            {/* 2. Border Divider Line directly between Video and Number */}
+            <div className="my-8 border-t border-[#105080]/40" />
+
+            {/* 3. Number > 4. Title > 5. Description Content */}
             <div className="px-1">
-              <p className="mb-2 text-xs uppercase tracking-[0.16em] text-[#38bdf8] font-mono font-medium">
+              <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#38bdf8] font-mono font-medium">
                 {service.number}
               </p>
               <h3 className="display-font text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl">
                 {service.name}
               </h3>
-              <p className="mt-3.5 max-w-xl text-sm leading-relaxed text-[#94a3b8]">
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#94a3b8]">
                 {service.description}
               </p>
             </div>
+
+            {/* 6. Border Divider Line at the bottom of the section */}
+            <div className="mt-8 border-t border-[#105080]/40" />
           </div>
         ))}
       </div>
 
       {/* ============================================================ */}
       {/* DESKTOP VIEW (>= 1024px)                                     */}
-      {/* Left Navigation + Right Sticky Video & Description Block     */}
+      {/* Left Navigation + Right Active Service Video Only            */}
       {/* ============================================================ */}
       <div className="hidden lg:grid lg:grid-cols-[.35fr_1.65fr] lg:gap-16">
         {/* Left Nav Buttons */}
@@ -167,10 +185,13 @@ export function ServicesShowcase() {
           </div>
         </div>
 
-        {/* Right Sticky Visual & Description */}
+        {/* Right Active Service Video Only (Plays on Hover) */}
         <div className="relative">
-          {/* Sticky Visual Container */}
-          <div className="sticky top-28 z-10 mb-12 aspect-[1.08/1] max-h-[580px] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_50px_rgba(5,13,26,0.8)]">
+          <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="group relative aspect-[1.08/1] max-h-[580px] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_50px_rgba(5,13,26,0.8)] cursor-pointer"
+          >
             {services.map((service, index) => {
               const isActive = activeService === index;
               return (
@@ -186,8 +207,10 @@ export function ServicesShowcase() {
                     }`}
                   >
                     <video
+                      ref={(el) => {
+                        desktopVideoRefs.current[index] = el;
+                      }}
                       src={service.video}
-                      autoPlay
                       loop
                       muted
                       playsInline
@@ -214,22 +237,9 @@ export function ServicesShowcase() {
                   {currentService.name}
                 </h3>
               </div>
-              <span className="hidden size-12 place-items-center rounded-full border border-white/60 md:grid">
+              <span className="hidden size-12 place-items-center rounded-full border border-white/60 md:grid transition-transform duration-300 group-hover:scale-110">
                 <ArrowDownRight className="size-5 text-white" />
               </span>
-            </div>
-          </div>
-
-          {/* Active Service Description Block */}
-          <div className="min-h-[25rem] border-t border-[#105080]/40 pt-10">
-            <p className="max-w-2xl text-[clamp(1.4rem,2.6vw,2.8rem)] leading-[1.12] tracking-[-.04em] text-white">
-              {currentService.description}
-            </p>
-            <div className="mt-14 flex items-center justify-between border-t border-[#105080]/40 pt-5">
-              <p className="text-xs uppercase tracking-[0.16em] text-[#94a3b8]">
-                Explore the possibility
-              </p>
-              <ArrowDownRight className="size-4 text-[#38bdf8]" />
             </div>
           </div>
         </div>
