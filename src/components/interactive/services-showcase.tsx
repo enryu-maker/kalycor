@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import Image, { type StaticImageData } from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { ArrowDownRight } from "lucide-react";
 
 export interface ServiceItem {
   number: string;
   name: string;
-  image?: StaticImageData;
-  video?: string;
-  description?: string;
+  video: string;
+  description: string;
 }
 
 export const services: ServiceItem[] = [
@@ -16,242 +15,216 @@ export const services: ServiceItem[] = [
     number: "01",
     name: "Staffing",
     video: "/videos/video1.mp4",
+    description:
+      "Connecting businesses with exceptional people and creating opportunities that move organizations forward.",
   },
   {
     number: "02",
     name: "Real Estate",
     video: "/videos/video3.mp4",
+    description:
+      "Creating and shaping spaces designed for people, businesses and long-term value.",
   },
   {
     number: "03",
     name: "Agriculture",
     video: "/videos/video4.mp4",
+    description:
+      "Building sustainable pathways from cultivation to markets through modern agricultural opportunities.",
   },
   {
     number: "04",
     name: "Import / Export",
     video: "/videos/video5.mp4",
+    description:
+      "Connecting markets, products and opportunities across borders through dependable global trade.",
   },
   {
     number: "05",
     name: "Security",
     video: "/videos/video2.mp4",
+    description:
+      "Protecting people, places and businesses through integrated security and surveillance solutions.",
   },
 ];
 
 export function ServicesShowcase() {
   const [activeService, setActiveService] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pillsContainerRef = useRef<HTMLDivElement>(null);
-  const pillButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const mobileRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleScroll = useCallback(() => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const totalScrollDistance = containerRef.current.offsetHeight - window.innerHeight;
-
-    if (totalScrollDistance <= 0) return;
-
-    // Sticky offset from the top of the viewport
-    const stickyTopOffset = window.innerWidth >= 1024 ? 96 : 80;
-    const scrolled = stickyTopOffset - rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / totalScrollDistance));
-
-    // Distribute thresholds evenly among the services
-    const rawIndex = Math.floor(progress * services.length);
-    const nextIndex = Math.min(services.length - 1, Math.max(0, rawIndex));
-
-    setActiveService((prev) => (prev !== nextIndex ? nextIndex : prev));
-  }, []);
-
+  // Mobile scroll detection: update sticky video based on which service is in view
   useEffect(() => {
-    let ticking = false;
+    const handleScroll = () => {
+      // Only apply on mobile/tablet viewports (< 1024px)
+      if (window.innerWidth >= 1024) return;
 
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
+      mobileRefs.current.forEach((el, index) => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        if (
+          rect.top < window.innerHeight * 0.65 &&
+          rect.bottom > window.innerHeight * 0.25
+        ) {
+          setActiveService(index);
+        }
+      });
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll]);
+  }, []);
 
-  // Auto-scroll the mobile pill container whenever activeService changes
+  // Ensure reveal-on-scroll elements animate properly
   useEffect(() => {
-    const activeBtn = pillButtonRefs.current[activeService];
-    const container = pillsContainerRef.current;
-    if (activeBtn && container) {
-      const containerWidth = container.offsetWidth;
-      const btnLeft = activeBtn.offsetLeft;
-      const btnWidth = activeBtn.offsetWidth;
-      const scrollTarget = btnLeft - (containerWidth / 2) + (btnWidth / 2);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
 
-      container.scrollTo({
-        left: Math.max(0, scrollTarget),
-        behavior: "smooth",
-      });
-    }
-  }, [activeService]);
-
-  const scrollToService = (index: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const currentScrollY = window.scrollY || window.pageYOffset;
-    const containerTop = rect.top + currentScrollY;
-    const totalScrollDistance = containerRef.current.offsetHeight - window.innerHeight;
-    const stickyTopOffset = window.innerWidth >= 1024 ? 96 : 80;
-
-    const stepDistance = totalScrollDistance / services.length;
-    const targetScrollY = containerTop - stickyTopOffset + (index + 0.5) * stepDistance;
-
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: "smooth",
+    mobileRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
     });
-  };
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const currentService = services[activeService] || services[0];
 
   return (
-    <div ref={containerRef} className="relative h-[650vh] sm:h-[750vh] lg:h-[850vh]">
-      {/* Sticky showcase container - positioned below fixed navbar */}
-      <div className="sticky top-20 lg:top-24">
-        {/* Mobile Navigation Pills with auto-centering and hidden scrollbar */}
-        <div className="relative mb-3 lg:hidden">
-          <div
-            ref={pillsContainerRef}
-            className="flex overflow-x-auto pb-2 pt-1 px-1 gap-2 no-scrollbar scroll-smooth"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            {services.map((service, index) => {
-              const isActive = activeService === index;
-              return (
-                <button
-                  key={service.number}
-                  ref={(el) => {
-                    pillButtonRefs.current[index] = el;
-                  }}
-                  type="button"
-                  onClick={() => scrollToService(index)}
-                  className={`flex shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-mono tracking-wider transition-all duration-300 whitespace-nowrap cursor-pointer ${
-                    isActive
-                      ? "bg-gradient-to-r from-[#105080] to-[#2563eb] text-white font-semibold border border-[#38bdf8]/60 shadow-[0_0_14px_rgba(56,189,248,0.35)] scale-[1.02]"
-                      : "bg-[#0a1c36]/90 text-[#94a3b8] hover:text-white border border-[#105080]/40"
+    <div className="grid gap-12 lg:grid-cols-[.35fr_1.65fr] lg:gap-16">
+      {/* Desktop Left Navigation */}
+      <div className="hidden lg:block">
+        <div className="sticky top-32 space-y-6">
+          {services.map((service, index) => {
+            const isActive = activeService === index;
+            return (
+              <button
+                key={service.number}
+                type="button"
+                onClick={() => setActiveService(index)}
+                data-active={isActive}
+                className={`service-nav-item relative block text-left text-sm uppercase tracking-[0.13em] cursor-pointer transition-all duration-300 ${
+                  isActive ? "text-white font-semibold" : "text-[#94a3b8] hover:text-white"
+                }`}
+                data-cursor-hover
+              >
+                <span
+                  className={`mr-4 font-mono transition-colors duration-300 ${
+                    isActive ? "text-[#38bdf8] font-bold" : "text-[#38bdf8]"
                   }`}
                 >
-                  <span className={isActive ? "text-[#66c8f5] font-bold" : ""}>{service.number}</span>
-                  <span className="whitespace-nowrap">{service.name}</span>
-                </button>
-              );
-            })}
+                  {service.number}
+                </span>
+                <span>{service.name}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Right Column: Sticky Video Container + Content Below */}
+      <div className="relative">
+        {/* Sticky Visual/Video Container */}
+        <div className="sticky top-20 sm:top-24 lg:top-28 z-10 mb-10 sm:mb-12 aspect-[1.08/1] max-h-[580px] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_50px_rgba(5,13,26,0.8)]">
+          {services.map((service, index) => {
+            const isActive = activeService === index;
+            return (
+              <div
+                key={service.number}
+                className={`absolute inset-0 size-full transition-opacity duration-700 ease-in-out ${
+                  isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                <div
+                  className={`relative size-full transform transition-transform duration-1000 ease-out ${
+                    isActive ? "scale-100" : "scale-[1.03]"
+                  }`}
+                >
+                  <video
+                    src={service.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="service-visual size-full object-cover object-center"
+                    data-cursor-hover
+                    data-cursor-label
+                  />
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Vignette Gradient Overlay */}
+          <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#071326]/85 via-transparent to-transparent" />
+
+          {/* Overlay Text & Arrow Icon */}
+          <div className="pointer-events-none absolute bottom-6 left-6 right-6 z-20 flex items-end justify-between md:bottom-10 md:left-10 md:right-10">
+            <div>
+              <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.16em] text-[#38bdf8]">
+                {currentService.number}
+              </p>
+              <h3 className="display-font text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl md:text-6xl">
+                {currentService.name}
+              </h3>
+            </div>
+            <span className="hidden size-12 place-items-center rounded-full border border-white/60 md:grid">
+              <ArrowDownRight className="size-5 text-white" />
+            </span>
           </div>
         </div>
 
-        <div className="grid items-center gap-6 lg:grid-cols-[auto_1fr] xl:grid-cols-[260px_1fr] lg:gap-10 xl:gap-14">
-          {/* Desktop Left Nav Tabs */}
-          <div className="hidden lg:block py-4 min-w-[220px]">
-            <div className="space-y-6 xl:space-y-7">
-              {services.map((service, index) => {
-                const isActive = activeService === index;
-                return (
-                  <button
-                    key={service.number}
-                    type="button"
-                    onClick={() => scrollToService(index)}
-                    data-active={isActive}
-                    className="service-nav-item group relative flex items-center text-left text-sm uppercase tracking-[0.13em] cursor-pointer transition-all duration-300 whitespace-nowrap"
-                    data-cursor-hover
-                  >
-                    <span
-                      className={`mr-4 font-mono font-medium transition-colors duration-300 shrink-0 ${
-                        isActive
-                          ? "text-[#38bdf8] font-bold drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]"
-                          : "text-[#94a3b8] group-hover:text-white"
-                      }`}
-                    >
-                      {service.number}
-                    </span>
-                    <span
-                      className={`whitespace-nowrap transition-colors duration-300 ${
-                        isActive ? "text-white font-semibold" : "text-[#94a3b8] group-hover:text-white"
-                      }`}
-                    >
-                      {service.name}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+        {/* Mobile View: Vertical list of service titles and descriptions below video */}
+        <div className="lg:hidden">
+          {services.map((service, index) => {
+            const isActive = activeService === index;
+            return (
+              <div
+                key={service.number}
+                ref={(el) => {
+                  mobileRefs.current[index] = el;
+                }}
+                className={`reveal-on-scroll border-t border-[#105080]/40 py-12 sm:py-16 transition-opacity duration-300 ${
+                  isActive ? "opacity-100" : "opacity-80"
+                }`}
+              >
+                <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#38bdf8] font-mono font-medium">
+                  {service.number}
+                </p>
+                <h3 className="display-font text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl">
+                  {service.name}
+                </h3>
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-[#94a3b8]">
+                  {service.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
 
-          {/* Showcase Visual Container with optimized width and height */}
-          <div className="relative">
-            <div className="relative h-[48vh] sm:h-[52vh] min-h-[280px] max-h-[460px] lg:h-[calc(100vh-10rem)] lg:min-h-[380px] lg:max-h-[680px] w-full overflow-hidden rounded-md bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_50px_rgba(5,13,26,0.8)]">
-              {services.map((service, index) => {
-                const isActive = activeService === index;
-                return (
-                  <div
-                    key={service.number}
-                    className={`absolute inset-0 size-full transition-opacity duration-700 ease-in-out ${
-                      isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                    }`}
-                  >
-                    <div
-                      className={`relative size-full transform transition-transform duration-1000 ease-out ${
-                        isActive ? "scale-100" : "scale-[1.03]"
-                      }`}
-                    >
-                      {service.video ? (
-                        <video
-                          src={service.video}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          preload="auto"
-                          className="service-visual size-full object-cover object-center"
-                        />
-                      ) : service.image ? (
-                        <Image
-                          src={service.image}
-                          alt={`${service.name} service`}
-                          fill
-                          priority={index === 0}
-                          className="service-visual size-full object-cover object-center"
-                          sizes="(max-width: 1024px) 100vw, 1400px"
-                          data-cursor-hover
-                          data-cursor-label
-                        />
-                      ) : null}
-                    </div>
-
-                    {/* Bottom Info Overlay for crisp service context */}
-                    <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-[#050d1a]/90 via-[#050d1a]/40 to-transparent p-4 sm:p-5 lg:p-7 flex items-end justify-between pointer-events-none">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="inline-block size-2 rounded-full bg-[#38bdf8] shadow-[0_0_8px_#38bdf8] animate-pulse"></span>
-                          <span className="text-[11px] sm:text-xs font-mono tracking-widest text-[#38bdf8] uppercase whitespace-nowrap">
-                            {service.number} // Sector Showcase
-                          </span>
-                        </div>
-                        <h3 className="text-base sm:text-xl lg:text-2xl font-bold tracking-tight text-white display-font drop-shadow-md whitespace-nowrap">
-                          {service.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+        {/* Desktop View: Active service description block with explore link below video */}
+        <div className="hidden min-h-[25rem] border-t border-[#105080]/40 pt-10 lg:block">
+          <p className="max-w-2xl text-[clamp(1.4rem,2.6vw,2.8rem)] leading-[1.12] tracking-[-.04em] text-white">
+            {currentService.description}
+          </p>
+          <div className="mt-14 flex items-center justify-between border-t border-[#105080]/40 pt-5">
+            <p className="text-xs uppercase tracking-[0.16em] text-[#94a3b8]">
+              Explore the possibility
+            </p>
+            <ArrowDownRight className="size-4 text-[#38bdf8]" />
           </div>
         </div>
       </div>
