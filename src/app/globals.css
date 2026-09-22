@@ -24,50 +24,80 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Brand Palette Extension for Tailwind Utilities */
+  --color-brand-royal: var(--brand-royal);
+  --color-brand-royal-deep: var(--brand-royal-deep);
+  --color-brand-cyan: var(--brand-cyan);
+  --color-brand-cyan-light: var(--brand-cyan-light);
+  --color-brand-cyan-bright: var(--brand-cyan-bright);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-deep: var(--brand-navy-deep);
+  --color-brand-navy-deepest: var(--brand-navy-deepest);
+  --color-brand-navy-card: var(--brand-navy-card);
+  --color-brand-navy-surface: var(--brand-navy-surface);
+  --color-brand-navy-elevated: var(--brand-navy-elevated);
+  --color-brand-cool-ice: var(--brand-cool-ice);
+  --color-brand-cool-light: var(--brand-cool-light);
+  --color-brand-cool-border: var(--brand-cool-border);
+  --color-brand-cool-slate: var(--brand-cool-slate);
 }
 
 :root {
-  --radius: 0.35rem;
+  --radius: 0.375rem;
+
+  /* ==========================================================================
+     KALYCOR BRAND PALETTE (Calibrated directly to the Brand Logo)
+     - Royal Blue:  #0866C6 (Lower dynamic arc & brand strength)
+     - Cyan Blue:   #20BCE5 (Upper dynamic arc & forward arrow apex)
+     - Deep Navy:   #071A2D (Obsidian framing shield & deep surfaces)
+     - Light Ice:   #F5F9FF (Crisp editorial light canvas)
+     - Pure White:  #FFFFFF (Highlights & high-contrast typography)
+     ========================================================================== */
+  --brand-royal: #0866C6;
+  --brand-royal-deep: #064E99;
+  --brand-royal-accent: #1178DE;
   
-  /* Brand Palette from logo.png */
-  --brand-navy-deep: #050d1a;
-  --brand-navy: #071326;
-  --brand-navy-card: #0a1c36;
-  --brand-navy-surface: #0f274a;
-  --brand-blue-deep: #082453;
-  --brand-blue-sapphire: #105080;
-  --brand-blue-royal: #1d4ed8;
-  --brand-blue-azure: #2563eb;
-  --brand-cyan: #0ea5e9;
-  --brand-cyan-light: #38bdf8;
-  --brand-cyan-bright: #66c8f5;
-  --brand-cool-ice: #f4f8fc;
-  --brand-cool-light: #eaf2fa;
-  --brand-cool-border: #d2e1f0;
-  --brand-cool-slate: #94a3b8;
-  --brand-white: #ffffff;
+  --brand-cyan: #20BCE5;
+  --brand-cyan-light: #52CFEE;
+  --brand-cyan-bright: #6BE0FF;
+  --brand-cyan-glow: rgba(32, 188, 229, 0.40);
   
+  --brand-navy-deepest: #02050B;
+  --brand-navy-deep: #030813;
+  --brand-navy: #071A2D;
+  --brand-navy-card: #0A2136;
+  --brand-navy-surface: #0E2942;
+  --brand-navy-elevated: #133656;
+  
+  --brand-cool-ice: #F5F9FF;
+  --brand-cool-light: #EBF3FC;
+  --brand-cool-border: #D2E3F3;
+  --brand-cool-slate: #94A3B8;
+  --brand-white: #FFFFFF;
+
   /* Theme Tokens */
-  --background: #071326;
-  --foreground: #f8fafc;
-  --card: #0a1c36;
-  --card-foreground: #f8fafc;
-  --popover: #0a1c36;
-  --popover-foreground: #f8fafc;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --secondary: #082453;
-  --secondary-foreground: #f8fafc;
-  --muted: #0d2242;
-  --muted-foreground: #94a3b8;
-  --accent: #38bdf8;
-  --accent-foreground: #050d1a;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: rgba(56, 189, 248, 0.14);
-  --input: rgba(56, 189, 248, 0.20);
-  --ring: #38bdf8;
-  
+  --background: #030813;
+  --foreground: #F8FAFC;
+  --card: #071A2D;
+  --card-foreground: #F8FAFC;
+  --popover: #071A2D;
+  --popover-foreground: #F8FAFC;
+  --primary: #0866C6;
+  --primary-foreground: #FFFFFF;
+  --secondary: #071A2D;
+  --secondary-foreground: #F8FAFC;
+  --muted: #0A2136;
+  --muted-foreground: #94A3B8;
+  --accent: #20BCE5;
+  --accent-foreground: #02050B;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(32, 188, 229, 0.12);
+  --input: rgba(32, 188, 229, 0.20);
+  --ring: #20BCE5;
+
+  /* Spacing & Typography */
   --page-gutter: clamp(1.25rem, 4vw, 4.5rem);
   --display: var(--font-manrope), "Manrope", "DM Sans", sans-serif;
   --serif: var(--font-instrument-serif), "Instrument Serif", Georgia, serif;
@@ -91,9 +121,13 @@ html {
 }
 
 ::selection {
-  background: var(--color-primary);
-  color: var(--color-primary-foreground);
+  background: var(--brand-royal);
+  color: #FFFFFF;
 }
+
+/* ==========================================================================
+   BRAND TYPOGRAPHY & STRUCTURAL UTILITIES
+   ========================================================================== */
 
 .site-shell {
   background: var(--color-background);
@@ -113,11 +147,111 @@ html {
 }
 
 .eyebrow {
-  color: var(--color-primary);
+  color: var(--brand-cyan);
   font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
+
+/* ==========================================================================
+   BRAND GRADIENTS & VISUAL EFFECTS (Inspired by Kalycor Logo)
+   ========================================================================== */
+
+/* Brand Gradient Text (Royal to Cyan sheen) */
+.brand-gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #6BE0FF 50%, #20BCE5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-gradient-text-royal {
+  background: linear-gradient(135deg, #0866C6 0%, #20BCE5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Brand Gradient Backgrounds */
+.brand-gradient-bg {
+  background: linear-gradient(135deg, #0866C6 0%, #1579D6 50%, #20BCE5 100%);
+}
+
+.brand-gradient-bg-subtle {
+  background: linear-gradient(135deg, rgba(8, 102, 198, 0.12) 0%, rgba(32, 188, 229, 0.12) 100%);
+}
+
+.brand-gradient-dark {
+  background: linear-gradient(180deg, #071A2D 0%, #030813 100%);
+}
+
+/* Premium Glass & Borders */
+.brand-glass-card {
+  background: rgba(7, 26, 45, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(32, 188, 229, 0.15);
+  box-shadow: 0 16px 36px -10px rgba(2, 5, 11, 0.65);
+}
+
+.brand-glass-card:hover {
+  border-color: rgba(32, 188, 229, 0.35);
+  box-shadow: 0 20px 40px -10px rgba(8, 102, 198, 0.35);
+}
+
+.brand-glow-cyan {
+  box-shadow: 0 0 24px rgba(32, 188, 229, 0.35);
+}
+
+.brand-glow-royal {
+  box-shadow: 0 0 24px rgba(8, 102, 198, 0.40);
+}
+
+/* ==========================================================================
+   NAVIGATION & SCROLL EFFECTS
+   ========================================================================== */
+
+.nav-glass {
+  background: rgba(3, 8, 19, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(32, 188, 229, 0.10);
+}
+
+.nav-scrolled {
+  background: rgba(2, 6, 15, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(32, 188, 229, 0.18);
+  box-shadow: 0 16px 36px -10px rgba(2, 5, 11, 0.85);
+}
+
+.line-link {
+  position: relative;
+}
+
+.line-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.3rem;
+  width: 100%;
+  height: 1.5px;
+  background: var(--brand-cyan, #20BCE5);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease;
+}
+
+.line-link:hover::after,
+.line-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   ANIMATIONS & TRANSITIONS
+   ========================================================================== */
 
 .word-reveal {
   animation: rise-in 0.9s cubic-bezier(0.2, 0.75, 0.2, 1) both;
@@ -137,43 +271,12 @@ html {
   filter: none;
 }
 
-.line-link {
-  position: relative;
-}
-
-.line-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -0.3rem;
-  width: 100%;
-  height: 1.5px;
-  background: var(--brand-cyan-light, #38bdf8);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s ease;
-}
-
-.line-link:hover::after,
-.line-link:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-.nav-scrolled {
-  background: rgba(7, 19, 38, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(56, 189, 248, 0.15);
-  box-shadow: 0 16px 36px -10px rgba(5, 13, 26, 0.6);
-}
-
 .grain::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
 }
@@ -183,14 +286,16 @@ html {
 }
 
 .hero-vignette {
-  background: linear-gradient(90deg,
-      rgba(7, 19, 38, 0.95) 0%,
-      rgba(7, 19, 38, 0.42) 55%,
-      rgba(7, 19, 38, 0.90) 100%),
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 35%, transparent 25%, rgba(3, 8, 19, 0.92) 95%),
+    linear-gradient(90deg,
+      rgba(3, 8, 19, 0.96) 0%,
+      rgba(7, 26, 45, 0.35) 50%,
+      rgba(3, 8, 19, 0.94) 100%),
     linear-gradient(0deg,
-      rgba(7, 19, 38, 0.98) 0%,
+      rgba(3, 8, 19, 0.98) 0%,
       transparent 45%,
-      rgba(7, 19, 38, 0.65) 100%);
+      rgba(3, 8, 19, 0.75) 100%);
 }
 
 .service-visual {
@@ -212,16 +317,16 @@ html {
 }
 
 .service-nav-item {
-  color: var(--brand-cool-slate, #94a3b8);
+  color: var(--brand-cool-slate, #94A3B8);
   transition: color 0.35s ease, padding 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
 .service-nav-item:hover {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .service-nav-item[data-active="true"] {
-  color: #ffffff;
+  color: #FFFFFF;
   padding-left: 0.85rem;
 }
 
@@ -232,8 +337,8 @@ html {
   top: 50%;
   width: 1.75rem;
   height: 2px;
-  background: var(--brand-cyan-light, #38bdf8);
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  background: var(--brand-cyan, #20BCE5);
+  box-shadow: 0 0 10px rgba(32, 188, 229, 0.7);
   transform: translate(-2.25rem, -50%);
   animation: fadeIn 0.3s ease-out forwards;
 }
@@ -244,7 +349,7 @@ html {
 }
 
 .form-field:focus-within {
-  border-color: var(--brand-blue-royal, #1d4ed8);
+  border-color: var(--brand-cyan, #20BCE5);
 }
 
 .form-field input,
@@ -255,13 +360,17 @@ html {
   width: 100%;
 }
 
+/* ==========================================================================
+   CUSTOM CURSOR
+   ========================================================================== */
+
 .cursor-dot {
   position: fixed;
   z-index: 70;
   width: 9px;
   height: 9px;
-  border: 1.5px solid var(--brand-cyan-light, #38bdf8);
-  background: rgba(56, 189, 248, 0.3);
+  border: 1.5px solid var(--brand-cyan, #20BCE5);
+  background: rgba(32, 188, 229, 0.25);
   border-radius: 999px;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -271,9 +380,9 @@ html {
 .cursor-dot.is-hovering {
   width: 64px;
   height: 64px;
-  background: rgba(16, 80, 128, 0.35);
-  border-color: var(--brand-cyan-bright, #66c8f5);
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+  background: rgba(8, 102, 198, 0.30);
+  border-color: var(--brand-cyan-bright, #6BE0FF);
+  box-shadow: 0 0 20px rgba(32, 188, 229, 0.35);
   mix-blend-mode: screen;
 }
 
@@ -284,7 +393,7 @@ html {
   transform: translate(-50%, -50%);
   font-size: 0.55rem;
   letter-spacing: 0.14em;
-  color: #ffffff;
+  color: #FFFFFF;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -292,6 +401,10 @@ html {
 .cursor-label.is-visible {
   opacity: 1;
 }
+
+/* ==========================================================================
+   KEYFRAME DEFINITIONS
+   ========================================================================== */
 
 @keyframes rise-in {
   from {
@@ -317,8 +430,20 @@ html {
   }
 }
 
-@media (max-width: 767px) {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 767px) {
   .cursor-dot,
   .cursor-label {
     display: none;

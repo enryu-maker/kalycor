@@ -1,9 +1,97 @@
 import type { CSSProperties } from "react";
-import { ArrowDownRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section id="top" className="grain relative flex min-h-[100svh] items-end overflow-hidden bg-[#071326]">
+    <section
+      id="top"
+      className="grain relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-[#02050B] text-white"
+    >
+      {/* ==========================================================================
+          ATMOSPHERIC BRAND GEOMETRY (Inspired directly by Kalycor Logo)
+          - 45° Tilted Diamond Ambient Shield
+          - Dynamic Royal Blue to Cyan Dual Wave Ribbons
+          ========================================================================== */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {/* Soft angular diamond ambient depth echoing the logo's outer shield */}
+        <div
+          className="absolute -left-[10%] -top-[15%] h-[950px] w-[950px] rotate-45 opacity-[0.10]"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(8, 102, 198, 0.5) 0%, rgba(7, 26, 45, 0.25) 50%, transparent 75%)",
+          }}
+        />
+
+        {/* Ambient Cyan Glow at Top Right */}
+        <div
+          className="absolute -right-[10%] top-[10%] h-[750px] w-[750px] rounded-full opacity-[0.07] blur-[150px]"
+          style={{
+            background: "radial-gradient(circle, #20BCE5 0%, #0866C6 60%, transparent 80%)",
+          }}
+        />
+
+        {/* Large sweeping curved wave ribbons matching Kalycor logo arcs */}
+        <svg
+          className="absolute inset-0 size-full opacity-65 mix-blend-screen"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1600 1000"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <linearGradient id="kalycor-wave-royal" x1="10%" y1="90%" x2="85%" y2="20%">
+              <stop offset="0%" stopColor="#030813" stopOpacity="0" />
+              <stop offset="30%" stopColor="#071A2D" stopOpacity="0.5" />
+              <stop offset="60%" stopColor="#0866C6" stopOpacity="0.6" />
+              <stop offset="85%" stopColor="#20BCE5" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#6BE0FF" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="kalycor-wave-cyan" x1="15%" y1="80%" x2="80%" y2="30%">
+              <stop offset="0%" stopColor="#071A2D" stopOpacity="0" />
+              <stop offset="35%" stopColor="#0866C6" stopOpacity="0.45" />
+              <stop offset="70%" stopColor="#20BCE5" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="#52CFEE" stopOpacity="0" />
+            </linearGradient>
+            <filter id="blur-crest" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="75" />
+            </filter>
+            <filter id="blur-deep" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="110" />
+            </filter>
+          </defs>
+
+          {/* Deep secondary wave arc */}
+          <path
+            d="M-200,920 C280,960 560,760 920,490 C1220,260 1460,300 1860,130"
+            fill="none"
+            stroke="url(#kalycor-wave-cyan)"
+            strokeWidth="220"
+            strokeLinecap="round"
+            filter="url(#blur-deep)"
+          />
+
+          {/* Primary sweeping crest curve */}
+          <path
+            d="M-100,830 C340,870 630,670 990,400 C1290,190 1520,220 1820,70"
+            fill="none"
+            stroke="url(#kalycor-wave-royal)"
+            strokeWidth="160"
+            strokeLinecap="round"
+            filter="url(#blur-crest)"
+          />
+        </svg>
+
+        {/* Subtle structural grid lines */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(32, 188, 229, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(32, 188, 229, 0.4) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+          }}
+        />
+      </div>
+
+      {/* Hero Video Background */}
       <video
         src="/videos/hero-video.mp4"
         autoPlay
@@ -11,40 +99,74 @@ export function HeroSection() {
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 size-full object-cover object-center pointer-events-none"
+        className="absolute inset-0 size-full object-cover object-center opacity-70 pointer-events-none"
       />
+
+      {/* Multi-stage Contrast Vignette */}
       <div className="hero-vignette absolute inset-0" />
-      <div className="relative z-10 w-full px-[var(--page-gutter)] pb-12 pt-40 md:pb-16">
-        <div className="mx-auto grid max-w-[1600px] gap-16 md:grid-cols-[1fr_auto] md:items-end">
-          <div>
-            <p className="eyebrow mb-6 text-[#38bdf8] word-reveal tracking-[0.2em]" style={{ "--delay": "180ms" } as CSSProperties}>
-              Global. Human. Future.
-            </p>
-            <h1 className="display-font max-w-5xl text-[clamp(3.4rem,9.5vw,9.5rem)] font-semibold leading-[0.88] tracking-[-0.065em] text-white">
-              <span className="block word-reveal" style={{ "--delay": "280ms" } as CSSProperties}>
-                Building a future
-              </span>
-              <span
-                className="serif-font block font-normal italic text-[#66c8f5] word-reveal drop-shadow-[0_0_35px_rgba(56,189,248,0.25)]"
-                style={{ "--delay": "400ms" } as CSSProperties}
-              >
-                of possibilities.
-              </span>
-            </h1>
-          </div>
-          <div className="flex items-end gap-10 md:pb-2">
-            <p className="hidden max-w-[14rem] text-sm leading-relaxed text-[#94a3b8] md:block">
-              We create the conditions for people, places and markets to move forward.
-            </p>
-            <a
-              href="#services"
-              className="group flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-white cursor-pointer"
+
+      {/* ==========================================================================
+          HERO CONTENT CONTAINER (Aligned with Navbar max-w-[1600px])
+          ========================================================================== */}
+      <div className="relative z-10 w-full px-[var(--page-gutter)] pb-14 pt-36 sm:pb-16 md:pb-20">
+        <div className="mx-auto max-w-[1600px]">
+          {/* Top Eyebrow Badge */}
+          <div className="mb-6 flex items-center gap-3">
+            <span
+              className="eyebrow word-reveal font-semibold text-[#20BCE5]"
+              style={{ "--delay": "150ms" } as CSSProperties}
             >
-              <span className="grid size-11 place-items-center rounded-full border border-white/30 transition-all duration-300 group-hover:border-[#38bdf8] group-hover:bg-[#105080] group-hover:shadow-[0_0_15px_rgba(56,189,248,0.35)] group-hover:text-white">
-                <ArrowDownRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
-              </span>
-              <span className="hidden sm:block text-[#94a3b8] transition-colors group-hover:text-white">Scroll to explore</span>
-            </a>
+              Global. Human. Future.
+            </span>
+            <span className="hidden h-px w-10 bg-gradient-to-r from-[#20BCE5]/60 to-transparent sm:inline-block" />
+          </div>
+
+          {/* Primary Hero Heading */}
+          <h1 className="display-font max-w-5xl text-[clamp(3.2rem,8.5vw,9rem)] font-bold leading-[0.88] tracking-[-0.065em] text-white">
+            <span className="block word-reveal" style={{ "--delay": "250ms" } as CSSProperties}>
+              Building a future
+            </span>
+            <span
+              className="serif-font block font-normal italic text-[#52CFEE] word-reveal drop-shadow-[0_0_35px_rgba(32,188,229,0.35)]"
+              style={{ "--delay": "380ms" } as CSSProperties}
+            >
+              of possibilities.
+            </span>
+          </h1>
+
+          {/* Bottom Grid: Supporting Copy + Prominent Call-to-Action Buttons */}
+          <div className="mt-10 grid gap-8 pt-4 border-t border-white/10 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-14">
+            {/* Supporting Copy */}
+            <p
+              className="max-w-xl text-base sm:text-lg leading-relaxed text-[#94A3B8] word-reveal"
+              style={{ "--delay": "450ms" } as CSSProperties}
+            >
+              We create the conditions for people, places and markets to move forward across staffing, real estate, agriculture, trade and security.
+            </p>
+
+            {/* CTAs & Scroll Link */}
+            <div
+              className="flex flex-wrap items-center gap-4 sm:gap-6 md:justify-end word-reveal"
+              style={{ "--delay": "520ms" } as CSSProperties}
+            >
+              {/* Primary CTA Button */}
+              <a
+                href="#services"
+                className="group inline-flex items-center gap-2 rounded-sm border border-[#20BCE5]/40 bg-gradient-to-r from-[#0866C6] via-[#1178DE] to-[#20BCE5] px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_0_24px_rgba(32,188,229,0.3)] transition-all duration-300 hover:shadow-[0_0_32px_rgba(32,188,229,0.5)] hover:scale-[1.02] active:scale-[0.99] cursor-pointer"
+              >
+                <span>Explore Services</span>
+                <ArrowDownRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+              </a>
+
+              {/* Secondary Action */}
+              <a
+                href="#enquiry"
+                className="group inline-flex items-center gap-2 rounded-sm border border-[#20BCE5]/25 bg-[#071A2D]/80 px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#20BCE5] backdrop-blur-md transition-all duration-300 hover:border-[#20BCE5] hover:bg-[#0A2946] hover:text-white cursor-pointer"
+              >
+                <span>Make an Enquiry</span>
+                <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

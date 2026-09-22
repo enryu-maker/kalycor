@@ -102,7 +102,7 @@ export function ServicesShowcase() {
             className="reveal-on-scroll"
           >
             {/* 1. Video Container with Overlay */}
-            <div className="relative aspect-[1.08/1] sm:aspect-[16/10] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_45px_rgba(5,13,26,0.85)]">
+            <div className="relative aspect-[1.08/1] sm:aspect-[16/10] w-full overflow-hidden rounded-sm bg-[#040A14]/94 backdrop-blur-md border border-[#20BCE5]/25 shadow-[0_24px_50px_rgba(2,6,12,0.85)]">
               <video
                 src={service.video}
                 autoPlay
@@ -113,12 +113,12 @@ export function ServicesShowcase() {
                 className="service-visual size-full object-cover object-center"
               />
               {/* Vignette Gradient Overlay */}
-              <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#071326]/85 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#040A14]/92 via-transparent to-transparent" />
 
               {/* Overlay inside bottom-left of Video */}
               <div className="pointer-events-none absolute bottom-5 left-5 right-5 z-20 flex items-end justify-between">
                 <div>
-                  <p className="mb-1.5 text-xs uppercase tracking-[0.16em] text-[#38bdf8]">
+                  <p className="mb-1.5 text-xs uppercase tracking-[0.16em] text-[#20BCE5]">
                     {service.number}
                   </p>
                   <h3 className="display-font text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl">
@@ -129,11 +129,11 @@ export function ServicesShowcase() {
             </div>
 
             {/* 2. Border Divider Line directly between Video and Number */}
-            <div className="my-8 border-t border-[#105080]/40" />
+            <div className="my-8 border-t border-[#0866C6]/25" />
 
             {/* 3. Number > 4. Title > 5. Description Content */}
             <div className="px-1">
-              <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#38bdf8] font-mono font-medium">
+              <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#20BCE5] font-mono font-medium">
                 {service.number}
               </p>
               <h3 className="display-font text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl">
@@ -145,7 +145,7 @@ export function ServicesShowcase() {
             </div>
 
             {/* 6. Border Divider Line at the bottom of the section */}
-            <div className="mt-8 border-t border-[#105080]/40" />
+            <div className="mt-8 border-t border-[#0866C6]/25" />
           </div>
         ))}
       </div>
@@ -173,7 +173,7 @@ export function ServicesShowcase() {
                 >
                   <span
                     className={`mr-4 font-mono transition-colors duration-300 ${
-                      isActive ? "text-[#38bdf8] font-bold" : "text-[#38bdf8]"
+                      isActive ? "text-[#20BCE5] font-bold" : "text-[#20BCE5]"
                     }`}
                   >
                     {service.number}
@@ -190,7 +190,7 @@ export function ServicesShowcase() {
           <div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="group relative aspect-[1.08/1] max-h-[580px] w-full overflow-hidden rounded-sm bg-[#050d1a] border border-[#105080]/60 shadow-[0_20px_50px_rgba(5,13,26,0.8)] cursor-pointer"
+            className="group relative aspect-[1.08/1] max-h-[580px] w-full overflow-hidden rounded-sm bg-[#040A14]/94 backdrop-blur-md border border-[#20BCE5]/25 shadow-[0_24px_50px_rgba(2,6,12,0.85)] cursor-pointer"
           >
             {services.map((service, index) => {
               const isActive = activeService === index;
@@ -225,19 +225,19 @@ export function ServicesShowcase() {
             })}
 
             {/* Vignette Gradient Overlay */}
-            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#071326]/85 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#040A14]/92 via-transparent to-transparent" />
 
             {/* Overlay Text & Arrow Icon */}
             <div className="pointer-events-none absolute bottom-6 left-6 right-6 z-20 flex items-end justify-between md:bottom-10 md:left-10 md:right-10">
               <div>
-                <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.16em] text-[#38bdf8]">
+                <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.16em] text-[#20BCE5]">
                   {currentService.number}
                 </p>
                 <h3 className="display-font text-4xl font-semibold tracking-[-.05em] text-white md:text-6xl">
                   {currentService.name}
                 </h3>
               </div>
-              <span className="hidden size-12 place-items-center rounded-full border border-white/60 md:grid transition-transform duration-300 group-hover:scale-110">
+              <span className="hidden size-12 place-items-center rounded-full border border-white/30 md:grid transition-all duration-300 group-hover:scale-110 group-hover:border-[#20BCE5] group-hover:bg-[#071A2D]/80">
                 <ArrowDownRight className="size-5 text-white" />
               </span>
             </div>

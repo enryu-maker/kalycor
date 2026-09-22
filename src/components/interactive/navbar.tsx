@@ -12,14 +12,33 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 24);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navItems = useMemo(() => ["Who We Are", "Services", "Enquiry"], []);
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const navItems = useMemo(
+    () => [
+      { name: "Who We Are", id: "who-we-are", number: "01" },
+      { name: "Services", id: "services", number: "02" },
+      { name: "Enquiry", id: "enquiry", number: "03" },
+    ],
+    []
+  );
 
   const scrollTo = (id: string) => {
     setMenuOpen(false);
@@ -32,58 +51,72 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b border-transparent px-[var(--page-gutter)] transition-all duration-500 ${scrolled ? "nav-scrolled py-4" : "py-6"
-          }`}
+        className={`fixed inset-x-0 top-0 z-50 px-[var(--page-gutter)] transition-all duration-500 ease-out ${
+          scrolled ? "nav-scrolled py-3.5 md:py-4" : "nav-glass py-5 md:py-6"
+        }`}
       >
-        <nav className="mx-auto flex max-w-[1600px] items-center justify-between" aria-label="Primary navigation">
+        <nav
+          className="mx-auto flex max-w-[1600px] items-center justify-between"
+          aria-label="Primary navigation"
+        >
+          {/* Brand Logo & Wordmark Lockup */}
           <button
             type="button"
             onClick={() => scrollTo("top")}
-            className="group flex items-center gap-3.5 text-left cursor-pointer"
+            className="group flex items-center gap-3.5 text-left cursor-pointer transition-transform focus:outline-none"
             aria-label="Kalycor Group home"
           >
-            <div className="relative h-10 w-12 shrink-0 overflow-hidden rounded-md border border-[#105080]/60 bg-[#082453] shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-[#38bdf8] group-hover:shadow-[0_0_15px_rgba(56,189,248,0.25)]">
+            <div className="relative h-9 w-11 shrink-0 transition-transform duration-300 ease-out group-hover:scale-105 sm:h-10 sm:w-12">
               <Image
                 src={brandLogo}
                 alt="Kalycor Group Logo"
                 fill
-                className="object-contain p-0.5"
-                sizes="48px"
+                className="relative z-10 object-contain drop-shadow-[0_2px_12px_rgba(8,102,198,0.25)]"
+                sizes="(max-width: 640px) 44px, 48px"
                 priority
               />
             </div>
-            <span className="display-font text-sm font-bold tracking-[0.2em] text-white">
-              KALYCOR<span className="text-[#66c8f5]">.</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="display-font text-sm font-bold tracking-[0.22em] text-white transition-colors duration-300 group-hover:text-white">
+                KALYCOR<span className="text-[#20BCE5]">.</span>
+              </span>
+            </div>
           </button>
 
-          <div className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => scrollTo(item === "Who We Are" ? "who-we-are" : item.toLowerCase())}
-                className="line-link text-xs uppercase tracking-[0.14em] text-[#94a3b8] transition-colors hover:text-white cursor-pointer"
-              >
-                {item}
-              </button>
-            ))}
+          {/* Desktop Navigation Links & Action Button */}
+          <div className="hidden items-center gap-8 lg:gap-10 md:flex">
+            <div className="flex items-center gap-7 lg:gap-9">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => scrollTo(item.id)}
+                  className="line-link text-[0.78rem] font-medium uppercase tracking-[0.16em] text-[#94A3B8] transition-colors duration-300 hover:text-white cursor-pointer"
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Prominent Brand CTA Button */}
             <Button
               type="button"
               onClick={() => scrollTo("enquiry")}
               variant="outline"
               size="sm"
-              className="border-[#105080] bg-[#0a1c36]/60 px-5 text-[#38bdf8] hover:bg-[#2563eb] hover:border-[#38bdf8] hover:text-white shadow-sm transition-all cursor-pointer backdrop-blur-sm"
+              className="group relative border border-[#20BCE5]/30 bg-gradient-to-r from-[#071A2D]/90 via-[#0A233D]/80 to-[#071A2D]/90 px-5 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[#20BCE5] shadow-[0_4px_16px_rgba(8,102,198,0.18)] transition-all duration-300 hover:border-[#20BCE5] hover:bg-gradient-to-r hover:from-[#0866C6] hover:to-[#20BCE5] hover:text-white hover:shadow-[0_0_22px_rgba(32,188,229,0.40)] cursor-pointer backdrop-blur-md"
             >
-              Make an enquiry <ArrowUpRight className="ml-1 size-3.5" />
+              <span>Make an enquiry</span>
+              <ArrowUpRight className="ml-1 size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Button>
           </div>
 
+          {/* Mobile Hamburger Toggle */}
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className="text-white md:hidden hover:bg-[#0a1c36]"
+            className="text-white md:hidden border border-white/10 bg-[#071A2D]/50 hover:bg-[#0A2946] hover:text-[#20BCE5] transition-all cursor-pointer"
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
@@ -92,25 +125,56 @@ export function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Navigation Drawer */}
       <div
-        className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#071326] px-[var(--page-gutter)] transition-all duration-500 md:hidden ${menuOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
-          }`}
+        className={`fixed inset-0 z-40 flex flex-col justify-between bg-[#02050B]/98 backdrop-blur-2xl px-[var(--page-gutter)] pt-28 pb-10 transition-all duration-500 ease-in-out md:hidden ${
+          menuOpen
+            ? "visible opacity-100 pointer-events-auto"
+            : "invisible opacity-0 pointer-events-none"
+        }`}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(16,80,128,0.35),transparent_60%)]" />
-        <div className="relative space-y-5">
+        {/* Subtle Brand Ambient Glow in Mobile Menu */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(8,102,198,0.22),transparent_60%),radial-gradient(circle_at_20%_80%,rgba(32,188,229,0.12),transparent_50%)]"
+          aria-hidden="true"
+        />
+
+        {/* Navigation Items with Numbers */}
+        <div className="relative space-y-6 my-auto">
           {navItems.map((item) => (
             <button
-              key={item}
+              key={item.name}
               type="button"
-              onClick={() => scrollTo(item === "Who We Are" ? "who-we-are" : item.toLowerCase())}
-              className="display-font block text-4xl font-semibold tracking-tight text-white transition-colors hover:text-[#38bdf8] text-left cursor-pointer"
+              onClick={() => scrollTo(item.id)}
+              className="group flex w-full items-baseline justify-between border-b border-[#20BCE5]/10 pb-4 text-left cursor-pointer transition-colors"
             >
-              {item}
+              <span className="display-font text-3xl font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-[#20BCE5]">
+                {item.name}
+              </span>
+              <span className="font-mono text-xs text-[#20BCE5]/70 tracking-widest">
+                {item.number}
+              </span>
             </button>
           ))}
+
+          {/* Mobile CTA */}
+          <div className="pt-4">
+            <button
+              type="button"
+              onClick={() => scrollTo("enquiry")}
+              className="flex w-full items-center justify-center gap-2 rounded-sm border border-[#20BCE5]/40 bg-gradient-to-r from-[#0866C6] to-[#20BCE5] py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-[0_0_20px_rgba(32,188,229,0.3)] transition-all active:scale-[0.99] cursor-pointer"
+            >
+              <span>Make an enquiry</span>
+              <ArrowUpRight className="size-4" />
+            </button>
+          </div>
         </div>
-        <p className="absolute bottom-8 left-[var(--page-gutter)] eyebrow text-[#38bdf8]">Global. Human. Future.</p>
+
+        {/* Mobile Footer Tagline */}
+        <div className="relative flex items-center justify-between pt-6 border-t border-white/5">
+          <p className="eyebrow text-[#20BCE5]">Global. Human. Future.</p>
+          <span className="text-[0.7rem] text-[#94A3B8]">© Kalycor Group</span>
+        </div>
       </div>
     </>
   );
