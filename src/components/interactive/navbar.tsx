@@ -52,32 +52,50 @@ export function Navbar() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 px-[var(--page-gutter)] transition-all duration-500 ease-out ${
-          scrolled ? "nav-scrolled py-3.5 md:py-4" : "nav-glass py-5 md:py-6"
+          scrolled ? "nav-scrolled py-3 md:py-3.5" : "nav-glass py-4 md:py-5"
         }`}
       >
+        {/* Protective Barrier Layer (Prevents underlying text and content bleed-through while preserving glassmorphism) */}
+        <div
+          className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ease-out ${
+            scrolled ? "opacity-100" : "opacity-0"
+          } bg-gradient-to-b from-[#0D1B2E] to-[#081421]`}
+          aria-hidden="true"
+        />
+        {/* Specular Top Rim Reflection */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+          aria-hidden="true"
+        />
+        {/* Subtle Ambient Glass Surface Sheen */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent"
+          aria-hidden="true"
+        />
+
         <nav
-          className="mx-auto flex max-w-[1600px] items-center justify-between"
+          className="relative mx-auto flex max-w-[1600px] items-center justify-between"
           aria-label="Primary navigation"
         >
           {/* Brand Logo & Wordmark Lockup */}
           <button
             type="button"
             onClick={() => scrollTo("top")}
-            className="group flex items-center gap-3.5 text-left cursor-pointer transition-transform focus:outline-none"
+            className="group flex items-center gap-3.5 sm:gap-4 text-left cursor-pointer transition-transform focus:outline-none"
             aria-label="Kalycor Group home"
           >
-            <div className="relative h-9 w-11 shrink-0 transition-transform duration-300 ease-out group-hover:scale-105 sm:h-10 sm:w-12">
+            <div className="relative h-11 w-12 shrink-0 transition-transform duration-300 ease-out group-hover:scale-105 sm:h-13 sm:w-14 md:h-14 md:w-15">
               <Image
                 src={brandLogo}
                 alt="Kalycor Group Logo"
                 fill
-                className="relative z-10 object-contain drop-shadow-[0_2px_12px_rgba(8,102,198,0.25)]"
-                sizes="(max-width: 640px) 44px, 48px"
+                className="relative z-10 object-contain drop-shadow-[0_2px_14px_rgba(32,188,229,0.35)] transition-all duration-300 group-hover:drop-shadow-[0_4px_22px_rgba(32,188,229,0.6)]"
+                sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
                 priority
               />
             </div>
-            <div className="flex flex-col">
-              <span className="display-font text-sm font-bold tracking-[0.22em] text-white transition-colors duration-300 group-hover:text-white">
+            <div className="flex flex-col justify-center">
+              <span className="display-font text-base sm:text-lg md:text-xl font-bold tracking-[0.20em] text-white transition-colors duration-300 group-hover:text-white">
                 KALYCOR<span className="text-[#20BCE5]">.</span>
               </span>
             </div>
@@ -127,7 +145,7 @@ export function Navbar() {
 
       {/* Mobile Navigation Drawer */}
       <div
-        className={`fixed inset-0 z-40 flex flex-col justify-between bg-[#02050B]/98 backdrop-blur-2xl px-[var(--page-gutter)] pt-28 pb-10 transition-all duration-500 ease-in-out md:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col justify-between bg-[#0A1725]/96 backdrop-blur-2xl px-[var(--page-gutter)] pt-28 pb-10 transition-all duration-500 ease-in-out md:hidden ${
           menuOpen
             ? "visible opacity-100 pointer-events-auto"
             : "invisible opacity-0 pointer-events-none"

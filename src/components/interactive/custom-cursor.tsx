@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 
 export function CustomCursor() {
-  const [cursor, setCursor] = useState({ x: 0, y: 0, hovering: false, label: false });
+  const [cursor, setCursor] = useState({
+    x: 0,
+    y: 0,
+    hovering: false,
+    label: false,
+    labelText: "EXPLORE",
+  });
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
@@ -17,17 +23,21 @@ export function CustomCursor() {
       if (!target) return;
       const hoverEl = target.closest("[data-cursor-hover]");
       const labelEl = target.closest("[data-cursor-label]");
+      const customLabel = labelEl?.getAttribute("data-cursor-label");
+
       if (hoverEl || labelEl) {
         setCursor((c) => ({
           ...c,
           hovering: true,
           label: Boolean(labelEl),
+          labelText: customLabel && customLabel.length > 0 ? customLabel : "EXPLORE",
         }));
       } else {
         setCursor((c) => ({
           ...c,
           hovering: false,
           label: false,
+          labelText: "EXPLORE",
         }));
       }
     };
@@ -53,7 +63,7 @@ export function CustomCursor() {
         style={{ left: cursor.x, top: cursor.y }}
         aria-hidden="true"
       >
-        EXPLORE
+        {cursor.labelText}
       </div>
     </>
   );

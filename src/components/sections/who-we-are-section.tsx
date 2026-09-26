@@ -76,10 +76,10 @@ export function WhoWeAreSection() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#02050B]/85 via-[#071A2D]/25 to-transparent" />
 
             {/* Floating Glass Label */}
-            <div className="pointer-events-none absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4 md:bottom-10 md:left-10 md:right-10">
-              <div>
-                <span className="eyebrow mb-2 block text-[#20BCE5]">Global Perspective</span>
-                <p className="display-font text-xl font-semibold tracking-tight text-white md:text-3xl">
+            <div className="pointer-events-none absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 md:bottom-10 md:left-10 md:right-10 flex flex-wrap items-end justify-between gap-4">
+              <div className="max-w-full">
+                <span className="eyebrow mb-1.5 sm:mb-2 block text-[#20BCE5]">Global Perspective</span>
+                <p className="display-font text-lg sm:text-xl md:text-3xl font-semibold tracking-tight text-white leading-snug break-words">
                   Creating lasting value across places and industries.
                 </p>
               </div>

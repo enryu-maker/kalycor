@@ -5,7 +5,7 @@ export function HeroSection() {
   return (
     <section
       id="top"
-      className="grain relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-[#02050B] text-white"
+      className="grain relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-[#091B2B] text-white"
     >
       {/* ==========================================================================
           ATMOSPHERIC BRAND GEOMETRY (Inspired directly by Kalycor Logo)
@@ -99,19 +99,21 @@ export function HeroSection() {
         muted
         playsInline
         preload="auto"
+        aria-hidden="true"
+        tabIndex={-1}
         className="absolute inset-0 size-full object-cover object-center opacity-70 pointer-events-none"
       />
 
       {/* Multi-stage Contrast Vignette */}
-      <div className="hero-vignette absolute inset-0" />
+      <div className="hero-vignette absolute inset-0 pointer-events-none" aria-hidden="true" />
 
       {/* ==========================================================================
           HERO CONTENT CONTAINER (Aligned with Navbar max-w-[1600px])
           ========================================================================== */}
-      <div className="relative z-10 w-full px-[var(--page-gutter)] pb-14 pt-36 sm:pb-16 md:pb-20">
+      <div className="relative z-10 w-full px-[var(--page-gutter)] pt-[clamp(5.5rem,11vh,9rem)] pb-[clamp(2.25rem,5.5vh,5rem)]">
         <div className="mx-auto max-w-[1600px]">
           {/* Top Eyebrow Badge */}
-          <div className="mb-6 flex items-center gap-3">
+          <div className="mb-4 sm:mb-6 flex items-center gap-3">
             <span
               className="eyebrow word-reveal font-semibold text-[#20BCE5]"
               style={{ "--delay": "150ms" } as CSSProperties}
@@ -122,12 +124,12 @@ export function HeroSection() {
           </div>
 
           {/* Primary Hero Heading */}
-          <h1 className="display-font max-w-5xl text-[clamp(3.2rem,8.5vw,9rem)] font-bold leading-[0.88] tracking-[-0.065em] text-white">
+          <h1 className="display-font max-w-5xl text-[clamp(2.85rem,7.5vw,9rem)] font-bold leading-[1.02] sm:leading-[0.98] md:leading-[0.96] tracking-[-0.065em] text-white">
             <span className="block word-reveal" style={{ "--delay": "250ms" } as CSSProperties}>
               Building a future
             </span>
             <span
-              className="serif-font block font-normal italic text-[#52CFEE] word-reveal drop-shadow-[0_0_35px_rgba(32,188,229,0.35)]"
+              className="serif-font block mt-2 sm:mt-3 md:mt-4 font-normal italic text-[#52CFEE] word-reveal drop-shadow-[0_0_35px_rgba(32,188,229,0.35)]"
               style={{ "--delay": "380ms" } as CSSProperties}
             >
               of possibilities.
@@ -135,7 +137,7 @@ export function HeroSection() {
           </h1>
 
           {/* Bottom Grid: Supporting Copy + Prominent Call-to-Action Buttons */}
-          <div className="mt-10 grid gap-8 pt-4 border-t border-white/10 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-14">
+          <div className="mt-[clamp(1.5rem,3.5vh,2.5rem)] grid gap-6 sm:gap-8 pt-4 border-t border-white/10 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-14">
             {/* Supporting Copy */}
             <p
               className="max-w-xl text-base sm:text-lg leading-relaxed text-[#94A3B8] word-reveal"
@@ -146,13 +148,14 @@ export function HeroSection() {
 
             {/* CTAs & Scroll Link */}
             <div
-              className="flex flex-wrap items-center gap-4 sm:gap-6 md:justify-end word-reveal"
+              className="flex flex-wrap items-center gap-3 sm:gap-4 md:justify-end word-reveal"
               style={{ "--delay": "520ms" } as CSSProperties}
             >
               {/* Primary CTA Button */}
               <a
                 href="#services"
-                className="group inline-flex items-center gap-2 rounded-sm border border-[#20BCE5]/40 bg-gradient-to-r from-[#0866C6] via-[#1178DE] to-[#20BCE5] px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_0_24px_rgba(32,188,229,0.3)] transition-all duration-300 hover:shadow-[0_0_32px_rgba(32,188,229,0.5)] hover:scale-[1.02] active:scale-[0.99] cursor-pointer"
+                aria-label="Explore Kalycor services"
+                className="group inline-flex items-center justify-center gap-2 rounded-sm border border-[#20BCE5]/40 bg-gradient-to-r from-[#0866C6] via-[#1178DE] to-[#20BCE5] px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_0_24px_rgba(32,188,229,0.3)] transition-all duration-300 hover:shadow-[0_0_32px_rgba(32,188,229,0.5)] hover:scale-[1.02] active:scale-[0.99] cursor-pointer"
               >
                 <span>Explore Services</span>
                 <ArrowDownRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
@@ -161,7 +164,8 @@ export function HeroSection() {
               {/* Secondary Action */}
               <a
                 href="#enquiry"
-                className="group inline-flex items-center gap-2 rounded-sm border border-[#20BCE5]/25 bg-[#071A2D]/80 px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#20BCE5] backdrop-blur-md transition-all duration-300 hover:border-[#20BCE5] hover:bg-[#0A2946] hover:text-white cursor-pointer"
+                aria-label="Make an enquiry with Kalycor"
+                className="group inline-flex items-center justify-center gap-2 rounded-sm border border-[#20BCE5]/25 bg-[#071A2D]/80 px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#20BCE5] backdrop-blur-md transition-all duration-300 hover:border-[#20BCE5] hover:bg-[#0A2946] hover:text-white cursor-pointer"
               >
                 <span>Make an Enquiry</span>
                 <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
