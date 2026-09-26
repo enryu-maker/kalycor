@@ -320,8 +320,8 @@ export function ServicesShowcase() {
       {/* 2. Unified Showcase Visual & Content (Sticky on Desktop, Tablet & Mobile) */}
       <div className="relative w-full min-w-0">
         <div ref={rightStickyRef} className="services-sticky-column w-full min-w-0">
-          {/* Mobile / Tablet Horizontal Service Indicator Pills (hidden to match attachment) */}
-          <div className="hidden">
+          {/* Mobile / Tablet Horizontal Service Indicator Pills */}
+          <div className="relative w-full max-w-full overflow-hidden lg:hidden mb-3 sm:mb-4">
             <div
               ref={mobilePillsContainerRef}
               className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth w-full min-w-0"
