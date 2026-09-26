@@ -497,8 +497,8 @@ export function ServicesShowcase() {
           {/* Mobile Divider Line (< 1024px) */}
           <div className="w-full border-t border-white/10 lg:hidden mt-7 mb-7 sm:mt-8 sm:mb-8" />
 
-          {/* Mobile Active Service Info Block (< 1024px) - Exactly matches attachment */}
-          <div className="lg:hidden relative min-h-[9rem] w-full min-w-0">
+          {/* Mobile Active Service Description (< 1024px) */}
+          <div className="lg:hidden relative min-h-[4.5rem] w-full min-w-0">
             {services.map((service, index) => {
               const diff = index - activeService;
               const isActive = activeService === index;
@@ -512,12 +512,6 @@ export function ServicesShowcase() {
                         : "opacity-0 -translate-y-4 pointer-events-none absolute inset-x-0 top-0"
                     }`}
                 >
-                  <p className="text-xs sm:text-sm font-semibold tracking-wider text-[#D57A1C] mb-2 font-mono">
-                    {service.number}
-                  </p>
-                  <h3 className="display-font text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
-                    {service.name}
-                  </h3>
                   <p className="text-sm sm:text-base leading-relaxed text-[#9e988f] max-w-md">
                     {service.description}
                   </p>
