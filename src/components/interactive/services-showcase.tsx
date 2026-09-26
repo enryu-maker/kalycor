@@ -320,8 +320,8 @@ export function ServicesShowcase() {
       {/* 2. Unified Showcase Visual & Content (Sticky on Desktop, Tablet & Mobile) */}
       <div className="relative w-full min-w-0">
         <div ref={rightStickyRef} className="services-sticky-column w-full min-w-0">
-          {/* Mobile / Tablet Horizontal Service Indicator Pills (< 1024px) */}
-          <div className="relative w-full max-w-full overflow-hidden lg:hidden mb-3 sm:mb-4">
+          {/* Mobile / Tablet Horizontal Service Indicator Pills (hidden to match attachment) */}
+          <div className="hidden">
             <div
               ref={mobilePillsContainerRef}
               className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth w-full min-w-0"
@@ -362,9 +362,9 @@ export function ServicesShowcase() {
             onTouchEnd={handleTouchEnd}
             data-cursor-hover
             data-cursor-label="PLAY"
-            className={`group relative z-10 aspect-[4/3] sm:aspect-[16/10] max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-[240px] sm:min-h-[280px] w-full min-w-0 overflow-hidden rounded-sm bg-[#040A14]/94 backdrop-blur-md border cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${isVideoHovered
-                ? "border-[#20BCE5]/60 shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
-                : "border-[#20BCE5]/25 shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
+            className={`group relative z-10 aspect-[300/277] sm:aspect-[16/10] max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-[240px] sm:min-h-[280px] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${isVideoHovered
+                ? "border-0 lg:border lg:border-[#20BCE5]/60 lg:shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
+                : "border-0 lg:border lg:border-[#20BCE5]/25 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
               }`}
             style={{
               transform: "translate3d(0, var(--parallax-y, 0px), 0)",
@@ -409,9 +409,9 @@ export function ServicesShowcase() {
               })}
             </div>
 
-            {/* Hover to Play State Indicator Pill */}
+            {/* Hover to Play State Indicator Pill (Desktop only) */}
             <div
-              className={`pointer-events-none absolute right-2.5 top-2.5 sm:right-4 sm:top-4 z-20 flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 py-1 sm:px-3 sm:py-1.5 backdrop-blur-md transition-all duration-300 ${isVideoHovered
+              className={`pointer-events-none absolute right-2.5 top-2.5 sm:right-4 sm:top-4 z-20 hidden lg:flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 py-1 sm:px-3 sm:py-1.5 backdrop-blur-md transition-all duration-300 ${isVideoHovered
                   ? "border-[#20BCE5]/40 bg-[#0866C6]/40 shadow-[0_0_16px_rgba(32,188,229,0.3)] opacity-95"
                   : "bg-[#071A2D]/85 opacity-85 shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                 }`}
@@ -444,7 +444,7 @@ export function ServicesShowcase() {
                     return (
                       <p
                         key={service.number}
-                        className={`absolute inset-0 text-[10px] sm:text-xs font-mono uppercase tracking-[0.16em] text-[#20BCE5] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                        className={`absolute inset-0 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] text-[#D57A1C] lg:text-[#20BCE5] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
                             ? "opacity-100 translate-y-0"
                             : diff > 0
                               ? "opacity-0 translate-y-full"
@@ -458,14 +458,14 @@ export function ServicesShowcase() {
                 </div>
 
                 {/* Vertical Sliding Service Name */}
-                <div className="relative h-7 sm:h-10 md:h-14 lg:h-16 w-full overflow-hidden">
+                <div className="relative h-8 sm:h-10 md:h-14 lg:h-16 w-full overflow-hidden">
                   {services.map((service, index) => {
                     const diff = index - activeService;
                     const isActive = activeService === index;
                     return (
                       <h3
                         key={service.number}
-                        className={`absolute inset-0 display-font text-xl sm:text-2xl md:text-4xl lg:text-5xl font-semibold tracking-[-.05em] text-white whitespace-nowrap transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                        className={`absolute inset-0 display-font text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
                             ? "opacity-100 translate-y-0"
                             : diff > 0
                               ? "opacity-0 translate-y-full"
@@ -487,15 +487,47 @@ export function ServicesShowcase() {
                   el?.scrollIntoView({ behavior: "smooth" });
                 }}
                 aria-label={`Enquire about ${services[activeService].name}`}
-                className="pointer-events-auto flex size-8 sm:size-10 md:size-11 place-items-center justify-center rounded-full border border-white/30 transition-all duration-300 hover:scale-110 hover:border-[#20BCE5] hover:bg-[#071A2D]/90 hover:shadow-[0_0_20px_rgba(32,188,229,0.35)] active:scale-95 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#20BCE5]"
+                className="pointer-events-auto hidden lg:flex size-8 sm:size-10 md:size-11 place-items-center justify-center rounded-full border border-white/30 transition-all duration-300 hover:scale-110 hover:border-[#20BCE5] hover:bg-[#071A2D]/90 hover:shadow-[0_0_20px_rgba(32,188,229,0.35)] active:scale-95 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#20BCE5]"
               >
                 <ArrowDownRight className="size-3.5 sm:size-4 md:size-5 text-white" />
               </button>
             </div>
           </div>
 
-          {/* Active Service Description (Smooth Vertical Slide on both Desktop & Mobile) */}
-          <div className="relative min-h-[3.25rem] sm:min-h-[3.75rem] mt-3 sm:mt-4 w-full min-w-0 overflow-hidden">
+          {/* Mobile Divider Line (< 1024px) */}
+          <div className="w-full border-t border-white/10 lg:hidden mt-7 mb-7 sm:mt-8 sm:mb-8" />
+
+          {/* Mobile Active Service Info Block (< 1024px) - Exactly matches attachment */}
+          <div className="lg:hidden relative min-h-[9rem] w-full min-w-0">
+            {services.map((service, index) => {
+              const diff = index - activeService;
+              const isActive = activeService === index;
+              return (
+                <div
+                  key={service.number}
+                  className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                      ? "opacity-100 translate-y-0 relative"
+                      : diff > 0
+                        ? "opacity-0 translate-y-4 pointer-events-none absolute inset-x-0 top-0"
+                        : "opacity-0 -translate-y-4 pointer-events-none absolute inset-x-0 top-0"
+                    }`}
+                >
+                  <p className="text-xs sm:text-sm font-semibold tracking-wider text-[#D57A1C] mb-2 font-mono">
+                    {service.number}
+                  </p>
+                  <h3 className="display-font text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
+                    {service.name}
+                  </h3>
+                  <p className="text-sm sm:text-base leading-relaxed text-[#9e988f] max-w-md">
+                    {service.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop Active Service Description (>= 1024px) */}
+          <div className="hidden lg:block relative min-h-[3.25rem] sm:min-h-[3.75rem] mt-3 sm:mt-4 w-full min-w-0 overflow-hidden">
             {services.map((service, index) => {
               const diff = index - activeService;
               const isActive = activeService === index;
