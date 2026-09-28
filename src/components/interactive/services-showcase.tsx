@@ -262,12 +262,12 @@ export function ServicesShowcase() {
           <div className="relative pl-7">
             {/* Continuous Vertical Rail */}
             <div
-              className="absolute left-0 top-1.5 bottom-1.5 w-[2px] bg-white/10 rounded-full"
+              className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-white/10 rounded-full"
               aria-hidden="true"
             />
             {/* Smoothly Animated Vertical Active Slider Pill */}
             <div
-              className="absolute left-0 w-[2px] h-7 bg-gradient-to-b from-[#20BCE5] via-[#20BCE5] to-[#0866C6] rounded-full shadow-[0_0_12px_rgba(32,188,229,0.85)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
+              className="absolute left-0 w-0.5 h-7 bg-linear-to-b from-[#20BCE5] via-[#20BCE5] to-[#0866C6] rounded-full shadow-[0_0_12px_rgba(32,188,229,0.85)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
               style={{
                 transform: `translateY(${activeService * 52}px)`,
               }}
@@ -362,7 +362,7 @@ export function ServicesShowcase() {
             onTouchEnd={handleTouchEnd}
             data-cursor-hover
             data-cursor-label="PLAY"
-            className={`group relative z-10 aspect-[300/277] sm:aspect-[16/10] max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-[240px] sm:min-h-[280px] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${isVideoHovered
+            className={`group relative z-10 aspect-300/277 sm:aspect-16/10 max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-60 sm:min-h-70 w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${isVideoHovered
                 ? "border-0 lg:border lg:border-[#20BCE5]/60 lg:shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
                 : "border-0 lg:border lg:border-[#20BCE5]/25 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
               }`}
@@ -431,7 +431,7 @@ export function ServicesShowcase() {
             </div>
 
             {/* Vignette Gradient Overlay */}
-            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#040A14]/92 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 z-10 bg-linear-to-t from-[#040A14]/92 via-transparent to-transparent" />
 
             {/* Overlay Text & Arrow Icon */}
             <div className="pointer-events-none absolute bottom-3.5 left-3.5 right-3.5 z-20 flex items-end justify-between sm:bottom-6 sm:left-6 sm:right-6 md:bottom-8 md:left-8 md:right-8">
@@ -498,7 +498,7 @@ export function ServicesShowcase() {
           <div className="w-full border-t border-white/10 lg:hidden mt-7 mb-7 sm:mt-8 sm:mb-8" />
 
           {/* Mobile Active Service Description (< 1024px) */}
-          <div className="lg:hidden relative min-h-[4.5rem] w-full min-w-0">
+          <div className="lg:hidden relative min-h-18 w-full min-w-0">
             {services.map((service, index) => {
               const diff = index - activeService;
               const isActive = activeService === index;
@@ -521,7 +521,7 @@ export function ServicesShowcase() {
           </div>
 
           {/* Desktop Active Service Description (>= 1024px) */}
-          <div className="hidden lg:block relative min-h-[3.25rem] sm:min-h-[3.75rem] mt-3 sm:mt-4 w-full min-w-0 overflow-hidden">
+          <div className="hidden lg:block relative min-h-13 sm:min-h-15 mt-3 sm:mt-4 w-full min-w-0 overflow-hidden">
             {services.map((service, index) => {
               const diff = index - activeService;
               const isActive = activeService === index;
