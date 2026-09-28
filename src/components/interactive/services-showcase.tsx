@@ -180,11 +180,11 @@ export function ServicesShowcase() {
     }
   }, [activeService]);
 
-  // Seamless video playback: Play active service video automatically when section is in view
+  // Video playback: Play active service video only when cursor hovers on the video
   useEffect(() => {
     videoRefs.current.forEach((videoEl, index) => {
       if (!videoEl) return;
-      if (index !== activeService || !isSectionInView) {
+      if (index !== activeService || !isVideoHovered) {
         videoEl.pause();
       } else {
         videoEl.muted = true;
@@ -194,7 +194,7 @@ export function ServicesShowcase() {
         }
       }
     });
-  }, [activeService, isSectionInView]);
+  }, [activeService, isVideoHovered]);
 
   // Click handler: smooth scroll on desktop, instant switch on mobile/tablet
   const handleServiceClick = (index: number) => {
