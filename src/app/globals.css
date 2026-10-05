@@ -373,8 +373,8 @@ html {
   position: relative;
   width: 100%;
   min-width: 0;
-  height: auto;
-  min-height: auto;
+  min-height: calc(100vh + 1500px);
+  height: calc(100vh + 1500px);
 }
 
 @media (min-width: 1024px) {
@@ -387,15 +387,14 @@ html {
 }
 
 .services-sticky-column {
-  position: relative;
-  top: auto;
+  position: sticky;
+  top: 4.5rem;
   width: 100%;
   min-width: 0;
 }
 
 @media (min-width: 1024px) {
   .services-sticky-column {
-    position: sticky;
     top: 7rem;
   }
 }

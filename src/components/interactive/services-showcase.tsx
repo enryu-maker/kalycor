@@ -90,29 +90,35 @@ export function ServicesShowcase() {
     return () => observer.disconnect();
   }, []);
 
-  // Synchronized scroll engine (Desktop only >= 1024px)
+  // Synchronized scroll engine (Fully scroll-driven for Desktop & Responsive)
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (ticking) return;
+      ticking = true;
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const winHeight = window.innerHeight;
-      const isDesktop = window.innerWidth >= 1024;
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (!containerRef.current) return;
 
-      if (!isDesktop) {
-        // Mobile view: change video 1, 2, 3, etc. as the user scrolls through the service section
-        const startY = winHeight * 0.70;
-        const endY = 50;
-        const totalDistance = startY - endY;
-        const currentDistance = startY - rect.top;
+        const rect = containerRef.current.getBoundingClientRect();
+        const winHeight = window.innerHeight;
+        const isDesktop = window.innerWidth >= 1024;
+
+        // SCROLL SYNCHRONIZATION: Section scroll progress -> activeService
+        const stickyTop = isDesktop ? 112 : 72; // 7rem on desktop, 4.5rem on mobile
+        const stickyHeight = rightStickyRef.current?.offsetHeight || (isDesktop ? 650 : 500);
+        const totalScrollable = Math.max(1, containerRef.current.offsetHeight - stickyHeight);
+        const currentScrolled = stickyTop - rect.top;
 
         let targetIndex = 0;
-        if (currentDistance <= 0) {
+        if (currentScrolled <= 0) {
           targetIndex = 0;
-        } else if (currentDistance >= totalDistance) {
+        } else if (currentScrolled >= totalScrollable) {
           targetIndex = services.length - 1;
         } else {
-          const progress = currentDistance / totalDistance;
+          const progress = currentScrolled / totalScrollable;
           targetIndex = Math.min(
             services.length - 1,
             Math.max(0, Math.floor(progress * services.length))
@@ -120,46 +126,24 @@ export function ServicesShowcase() {
         }
 
         setActiveService((prev) => (prev !== targetIndex ? targetIndex : prev));
-        return;
-      }
 
-      // SCROLL SYNCHRONIZATION: Section scroll progress -> activeService
-      const stickyTop = 112; // 7rem in px
-      const stickyHeight = rightStickyRef.current?.offsetHeight || 650;
-      const totalScrollable = Math.max(1, containerRef.current.offsetHeight - stickyHeight);
-      const currentScrolled = stickyTop - rect.top;
+        // PARALLAX
+        if (prefersReducedMotion.current) {
+          containerRef.current.style.setProperty("--parallax-y", "0px");
+          containerRef.current.style.setProperty("--services-progress", "0");
+          return;
+        }
 
-      let targetIndex = 0;
-      if (currentScrolled <= 0) {
-        targetIndex = 0;
-      } else if (currentScrolled >= totalScrollable) {
-        targetIndex = services.length - 1;
-      } else {
-        const progress = currentScrolled / totalScrollable;
-        targetIndex = Math.min(
-          services.length - 1,
-          Math.max(0, Math.floor(progress * services.length))
-        );
-      }
+        if (rect.bottom > -100 && rect.top < winHeight + 100) {
+          const totalDistance = containerRef.current.offsetHeight + winHeight;
+          const currentDistance = winHeight - rect.top;
+          const progress = Math.max(0, Math.min(1, currentDistance / totalDistance));
+          const parallaxY = (progress - 0.5) * -16;
 
-      setActiveService((prev) => (prev !== targetIndex ? targetIndex : prev));
-
-      // PARALLAX
-      if (prefersReducedMotion.current) {
-        containerRef.current.style.setProperty("--parallax-y", "0px");
-        containerRef.current.style.setProperty("--services-progress", "0");
-        return;
-      }
-
-      if (rect.bottom > -100 && rect.top < winHeight + 100) {
-        const totalDistance = containerRef.current.offsetHeight + winHeight;
-        const currentDistance = winHeight - rect.top;
-        const progress = Math.max(0, Math.min(1, currentDistance / totalDistance));
-        const parallaxY = (progress - 0.5) * -16;
-
-        containerRef.current.style.setProperty("--services-progress", progress.toFixed(4));
-        containerRef.current.style.setProperty("--parallax-y", `${parallaxY.toFixed(2)}px`);
-      }
+          containerRef.current.style.setProperty("--services-progress", progress.toFixed(4));
+          containerRef.current.style.setProperty("--parallax-y", `${parallaxY.toFixed(2)}px`);
+        }
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -180,11 +164,15 @@ export function ServicesShowcase() {
     }
   }, [activeService]);
 
-  // Video playback: Play active service video only when cursor hovers on the video
+  // Video playback: Play active service video (on mobile when section is in view, on desktop when hovered)
   useEffect(() => {
     videoRefs.current.forEach((videoEl, index) => {
       if (!videoEl) return;
-      if (index !== activeService || !isVideoHovered) {
+      const isCurrent = index === activeService;
+      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
+      const shouldPlay = isCurrent && (isSectionInView || (isDesktop && isVideoHovered));
+
+      if (!shouldPlay) {
         videoEl.pause();
       } else {
         videoEl.muted = true;
@@ -194,39 +182,28 @@ export function ServicesShowcase() {
         }
       }
     });
-  }, [activeService, isVideoHovered]);
+  }, [activeService, isVideoHovered, isSectionInView]);
 
-  // Click handler: smooth scroll on desktop, instant switch on mobile/tablet
+  // Click handler: smooth scroll to selected service for both desktop and mobile
   const handleServiceClick = (index: number) => {
     setActiveService(index);
+    if (!containerRef.current) return;
+
     const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
+    const rect = containerRef.current.getBoundingClientRect();
+    const stickyTop = isDesktop ? 112 : 72;
+    const stickyHeight = rightStickyRef.current?.offsetHeight || (isDesktop ? 650 : 500);
+    const totalScrollable = Math.max(1, containerRef.current.offsetHeight - stickyHeight);
 
-    if (isDesktop && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const stickyTop = 112;
-      const stickyHeight = rightStickyRef.current?.offsetHeight || 650;
-      const totalScrollable = Math.max(1, containerRef.current.offsetHeight - stickyHeight);
+    // Scroll to the midpoint of the targeted service's scroll segment
+    const targetProgress = (index + 0.5) / services.length;
+    const targetScrollY =
+      window.scrollY +
+      rect.top -
+      stickyTop +
+      targetProgress * totalScrollable;
 
-      // Scroll to the midpoint of the targeted service's scroll segment
-      const targetProgress = (index + 0.5) / services.length;
-      const targetScrollY =
-        window.scrollY +
-        rect.top -
-        stickyTop +
-        targetProgress * totalScrollable;
-
-      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
-    } else if (!isDesktop && containerRef.current) {
-      const winHeight = window.innerHeight;
-      const rect = containerRef.current.getBoundingClientRect();
-      const startY = winHeight * 0.70;
-      const endY = 50;
-      const totalDistance = startY - endY;
-      const targetDistance = ((index + 0.5) / services.length) * totalDistance;
-      const targetScrollY = window.scrollY + rect.top - (startY - targetDistance);
-
-      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
-    }
+    window.scrollTo({ top: targetScrollY, behavior: "smooth" });
   };
 
   // Touch swipe support for mobile video card
