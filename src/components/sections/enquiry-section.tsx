@@ -2,8 +2,11 @@ import { EnquiryForm } from "@/components/interactive/enquiry-form";
 
 export function EnquirySection() {
   return (
-    <section id="enquiry" className="border-b border-[#d2e1f0] bg-[#f4f8fc] px-[var(--page-gutter)] py-28 md:py-40 text-[#071326]">
-      <div className="mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[.9fr_1.1fr] lg:gap-28">
+    <section
+      id="enquiry"
+      className="border-b border-[#d2e1f0] bg-[#f4f8fc] px-[var(--page-gutter)] py-28 md:py-40 text-[#071326]"
+    >
+      <div className="mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-28">
         <div className="reveal-on-scroll">
           <p className="eyebrow mb-6 flex items-center gap-2 font-semibold text-[#0866C6]">
             <span className="inline-block size-1.5 rounded-full bg-[#0866C6]" />
@@ -19,6 +22,7 @@ export function EnquirySection() {
             Tell us what you&apos;re looking to build, grow, move or protect.
           </p>
         </div>
+
         <EnquiryForm />
       </div>
     </section>

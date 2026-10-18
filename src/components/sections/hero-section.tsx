@@ -7,13 +7,7 @@ export function HeroSection() {
       id="top"
       className="grain relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-[#091B2B] text-white"
     >
-      {/* ==========================================================================
-          ATMOSPHERIC BRAND GEOMETRY (Inspired directly by Kalycor Logo)
-          - 45° Tilted Diamond Ambient Shield
-          - Dynamic Royal Blue to Cyan Dual Wave Ribbons
-          ========================================================================== */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {/* Soft angular diamond ambient depth echoing the logo's outer shield */}
         <div
           className="absolute -left-[10%] -top-[15%] h-[950px] w-[950px] rotate-45 opacity-[0.10]"
           style={{
@@ -22,7 +16,6 @@ export function HeroSection() {
           }}
         />
 
-        {/* Ambient Cyan Glow at Top Right */}
         <div
           className="absolute -right-[10%] top-[10%] h-[750px] w-[750px] rounded-full opacity-[0.07] blur-[150px]"
           style={{
@@ -30,7 +23,6 @@ export function HeroSection() {
           }}
         />
 
-        {/* Large sweeping curved wave ribbons matching Kalycor logo arcs */}
         <svg
           className="absolute inset-0 size-full opacity-65 mix-blend-screen"
           xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +51,6 @@ export function HeroSection() {
             </filter>
           </defs>
 
-          {/* Deep secondary wave arc */}
           <path
             d="M-200,920 C280,960 560,760 920,490 C1220,260 1460,300 1860,130"
             fill="none"
@@ -69,7 +60,6 @@ export function HeroSection() {
             filter="url(#blur-deep)"
           />
 
-          {/* Primary sweeping crest curve */}
           <path
             d="M-100,830 C340,870 630,670 990,400 C1290,190 1520,220 1820,70"
             fill="none"
@@ -80,7 +70,6 @@ export function HeroSection() {
           />
         </svg>
 
-        {/* Subtle structural grid lines */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -91,7 +80,6 @@ export function HeroSection() {
         />
       </div>
 
-      {/* Hero Video Background */}
       <video
         src="/videos/hero-video.mp4"
         autoPlay
@@ -104,15 +92,10 @@ export function HeroSection() {
         className="absolute inset-0 size-full object-cover object-center opacity-70 pointer-events-none"
       />
 
-      {/* Multi-stage Contrast Vignette */}
       <div className="hero-vignette absolute inset-0 pointer-events-none" aria-hidden="true" />
 
-      {/* ==========================================================================
-          HERO CONTENT CONTAINER (Aligned with Navbar max-w-[1600px])
-          ========================================================================== */}
       <div className="relative z-10 w-full px-[var(--page-gutter)] pt-[clamp(5.5rem,11vh,9rem)] pb-[clamp(2.25rem,5.5vh,5rem)]">
         <div className="mx-auto max-w-[1600px]">
-          {/* Top Eyebrow Badge */}
           <div className="mb-4 sm:mb-6 flex items-center gap-3">
             <span
               className="eyebrow word-reveal font-semibold text-[#20BCE5]"
@@ -123,7 +106,6 @@ export function HeroSection() {
             <span className="hidden h-px w-10 bg-gradient-to-r from-[#20BCE5]/60 to-transparent sm:inline-block" />
           </div>
 
-          {/* Primary Hero Heading */}
           <h1 className="display-font max-w-5xl text-[clamp(2.85rem,7.5vw,9rem)] font-bold leading-[1.02] sm:leading-[0.98] md:leading-[0.96] tracking-[-0.065em] text-white">
             <span className="block word-reveal" style={{ "--delay": "250ms" } as CSSProperties}>
               Building a future
@@ -136,9 +118,7 @@ export function HeroSection() {
             </span>
           </h1>
 
-          {/* Bottom Grid: Supporting Copy + Prominent Call-to-Action Buttons */}
           <div className="mt-[clamp(1.5rem,3.5vh,2.5rem)] grid gap-6 sm:gap-8 pt-4 border-t border-white/10 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-14">
-            {/* Supporting Copy */}
             <p
               className="max-w-xl text-base sm:text-lg leading-relaxed text-[#94A3B8] word-reveal"
               style={{ "--delay": "450ms" } as CSSProperties}
@@ -146,12 +126,10 @@ export function HeroSection() {
               We create the conditions for people, places and markets to move forward across staffing, real estate, agriculture, trade and security.
             </p>
 
-            {/* CTAs & Scroll Link */}
             <div
               className="flex flex-wrap items-center gap-3 sm:gap-4 md:justify-end word-reveal"
               style={{ "--delay": "520ms" } as CSSProperties}
             >
-              {/* Primary CTA Button */}
               <a
                 href="#services"
                 aria-label="Explore Kalycor services"
@@ -161,7 +139,6 @@ export function HeroSection() {
                 <ArrowDownRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
               </a>
 
-              {/* Secondary Action */}
               <a
                 href="#enquiry"
                 aria-label="Make an enquiry with Kalycor"

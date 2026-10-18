@@ -6,23 +6,31 @@ export function ScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+
     const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? (window.scrollY / max) * 100 : 0);
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        setProgress(total > 0 ? (window.scrollY / total) * 100 : 0);
+        ticking = false;
+      });
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
           }
-        });
+        }
       },
       { threshold: 0.15 }
     );
 
-    document.querySelectorAll(".reveal-on-scroll").forEach((element) => observer.observe(element));
+    document.querySelectorAll(".reveal-on-scroll").forEach((el) => observer.observe(el));
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 

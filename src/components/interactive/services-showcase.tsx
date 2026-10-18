@@ -49,227 +49,207 @@ export const services: ServiceItem[] = [
 ];
 
 export function ServicesShowcase() {
-  const [activeService, setActiveService] = useState(0);
-  const [isVideoHovered, setIsVideoHovered] = useState(false);
-  const [isSectionInView, setIsSectionInView] = useState(false);
+  const [active, setActive] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(false);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rightStickyRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const mobilePillsContainerRef = useRef<HTMLDivElement>(null);
-  const mobilePillRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const prefersReducedMotion = useRef<boolean>(false);
-  const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>(null);
+  const pillTrackRef = useRef<HTMLDivElement>(null);
+  const pillRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const prefersReducedMotion = useRef(false);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
-  // Detect prefers-reduced-motion
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    prefersReducedMotion.current = mediaQuery.matches;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    prefersReducedMotion.current = mq.matches;
 
-    const handler = (e: MediaQueryListEvent) => {
+    const onChange = (e: MediaQueryListEvent) => {
       prefersReducedMotion.current = e.matches;
     };
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // Section visibility detection for performance optimization
   useEffect(() => {
-    if (!containerRef.current) return;
+    const el = rootRef.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsSectionInView(entry.isIntersecting);
-        });
-      },
-      { threshold: 0.01, rootMargin: "150px 0px 150px 0px" }
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.01, rootMargin: "150px 0px" }
     );
-    observer.observe(containerRef.current);
+
+    observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Synchronized scroll engine (Fully scroll-driven for Desktop & Responsive)
   useEffect(() => {
     let ticking = false;
 
-    const handleScroll = () => {
+    const onScroll = () => {
       if (ticking) return;
       ticking = true;
 
       requestAnimationFrame(() => {
         ticking = false;
-        if (!containerRef.current) return;
+        const el = rootRef.current;
+        if (!el) return;
 
-        const rect = containerRef.current.getBoundingClientRect();
-        const winHeight = window.innerHeight;
+        const rect = el.getBoundingClientRect();
+        const winH = window.innerHeight;
         const isDesktop = window.innerWidth >= 1024;
 
-        // SCROLL SYNCHRONIZATION: Section scroll progress -> activeService
-        const stickyTop = isDesktop ? 112 : 72; // 7rem on desktop, 4.5rem on mobile
-        const stickyHeight = rightStickyRef.current?.offsetHeight || (isDesktop ? 650 : 500);
-        const totalScrollable = Math.max(1, containerRef.current.offsetHeight - stickyHeight);
-        const currentScrolled = stickyTop - rect.top;
+        const stickyTop = isDesktop ? 112 : 72;
+        const stickyH = stickyRef.current?.offsetHeight || (isDesktop ? 650 : 500);
+        const scrollable = Math.max(1, el.offsetHeight - stickyH);
+        const scrolled = stickyTop - rect.top;
 
-        let targetIndex = 0;
-        if (currentScrolled <= 0) {
-          targetIndex = 0;
-        } else if (currentScrolled >= totalScrollable) {
-          targetIndex = services.length - 1;
+        let index = 0;
+        if (scrolled <= 0) {
+          index = 0;
+        } else if (scrolled >= scrollable) {
+          index = services.length - 1;
         } else {
-          const progress = currentScrolled / totalScrollable;
-          targetIndex = Math.min(
+          const ratio = scrolled / scrollable;
+          index = Math.min(
             services.length - 1,
-            Math.max(0, Math.floor(progress * services.length))
+            Math.max(0, Math.floor(ratio * services.length))
           );
         }
 
-        setActiveService((prev) => (prev !== targetIndex ? targetIndex : prev));
+        setActive((prev) => (prev !== index ? index : prev));
 
-        // PARALLAX
         if (prefersReducedMotion.current) {
-          containerRef.current.style.setProperty("--parallax-y", "0px");
-          containerRef.current.style.setProperty("--services-progress", "0");
+          el.style.setProperty("--parallax-y", "0px");
+          el.style.setProperty("--services-progress", "0");
           return;
         }
 
-        if (rect.bottom > -100 && rect.top < winHeight + 100) {
-          const totalDistance = containerRef.current.offsetHeight + winHeight;
-          const currentDistance = winHeight - rect.top;
-          const progress = Math.max(0, Math.min(1, currentDistance / totalDistance));
-          const parallaxY = (progress - 0.5) * -16;
+        if (rect.bottom > -100 && rect.top < winH + 100) {
+          const totalDist = el.offsetHeight + winH;
+          const currentDist = winH - rect.top;
+          const progress = Math.max(0, Math.min(1, currentDist / totalDist));
+          const parallax = (progress - 0.5) * -16;
 
-          containerRef.current.style.setProperty("--services-progress", progress.toFixed(4));
-          containerRef.current.style.setProperty("--parallax-y", `${parallaxY.toFixed(2)}px`);
+          el.style.setProperty("--services-progress", progress.toFixed(4));
+          el.style.setProperty("--parallax-y", `${parallax.toFixed(2)}px`);
         }
       });
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    onScroll();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
-  // Auto-scroll active mobile pill into view when activeService updates
   useEffect(() => {
-    if (mobilePillRefs.current[activeService] && mobilePillsContainerRef.current) {
-      const pill = mobilePillRefs.current[activeService];
-      pill?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
-  }, [activeService]);
+    pillRefs.current[active]?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [active]);
 
-  // Video playback: Play active service video (on mobile when section is in view, on desktop when hovered)
   useEffect(() => {
-    videoRefs.current.forEach((videoEl, index) => {
-      if (!videoEl) return;
-      const isCurrent = index === activeService;
-      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
-      const shouldPlay = isCurrent && (isSectionInView || (isDesktop && isVideoHovered));
+    const isDesktop = window.innerWidth >= 1024;
 
-      if (!shouldPlay) {
-        videoEl.pause();
+    videoRefs.current.forEach((video, i) => {
+      if (!video) return;
+      const isCurrent = i === active;
+      const shouldPlay = isCurrent && (inView || (isDesktop && hovered));
+
+      if (shouldPlay) {
+        video.muted = true;
+        video.play().catch(() => {});
       } else {
-        videoEl.muted = true;
-        const playPromise = videoEl.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => { });
-        }
+        video.pause();
       }
     });
-  }, [activeService, isVideoHovered, isSectionInView]);
+  }, [active, hovered, inView]);
 
-  // Click handler: smooth scroll to selected service for both desktop and mobile
-  const handleServiceClick = (index: number) => {
-    setActiveService(index);
-    if (!containerRef.current) return;
+  const selectService = (index: number) => {
+    setActive(index);
+    const el = rootRef.current;
+    if (!el) return;
 
-    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1024;
-    const rect = containerRef.current.getBoundingClientRect();
+    const isDesktop = window.innerWidth >= 1024;
+    const rect = el.getBoundingClientRect();
     const stickyTop = isDesktop ? 112 : 72;
-    const stickyHeight = rightStickyRef.current?.offsetHeight || (isDesktop ? 650 : 500);
-    const totalScrollable = Math.max(1, containerRef.current.offsetHeight - stickyHeight);
+    const stickyH = stickyRef.current?.offsetHeight || (isDesktop ? 650 : 500);
+    const scrollable = Math.max(1, el.offsetHeight - stickyH);
 
-    // Scroll to the midpoint of the targeted service's scroll segment
-    const targetProgress = (index + 0.5) / services.length;
-    const targetScrollY =
-      window.scrollY +
-      rect.top -
-      stickyTop +
-      targetProgress * totalScrollable;
+    // Midpoint of target service scroll segment
+    const segmentProgress = (index + 0.5) / services.length;
+    const targetY = window.scrollY + rect.top - stickyTop + segmentProgress * scrollable;
 
-    window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+    window.scrollTo({ top: targetY, behavior: "smooth" });
   };
 
-  // Touch swipe support for mobile video card
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-    const diffX = e.changedTouches[0].clientX - touchStartX.current;
-    const diffY = e.changedTouches[0].clientY - touchStartY.current;
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart.current) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.current.x;
+    const dy = t.clientY - touchStart.current.y;
 
-    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-      if (diffX < 0) {
-        handleServiceClick((activeService + 1) % services.length);
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) {
+        selectService((active + 1) % services.length);
       } else {
-        handleServiceClick((activeService - 1 + services.length) % services.length);
+        selectService((active - 1 + services.length) % services.length);
       }
     }
-    touchStartX.current = null;
-    touchStartY.current = null;
+    touchStart.current = null;
   };
 
   return (
     <div
-      ref={containerRef}
+      ref={rootRef}
       className="services-showcase-container grid gap-6 sm:gap-8 lg:grid-cols-[0.35fr_1.65fr] lg:gap-16 relative w-full min-w-0"
     >
-      {/* 1. Left Sticky Navigation Column (Desktop only >= 1024px) with Vertical Progress Track */}
-      <div className="hidden lg:block relative min-w-0">
+      <aside className="hidden lg:block relative min-w-0">
         <div className="services-nav-column sticky top-28">
           <div className="relative pl-7">
-            {/* Continuous Vertical Rail */}
             <div
               className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-white/10 rounded-full"
               aria-hidden="true"
             />
-            {/* Smoothly Animated Vertical Active Slider Pill */}
             <div
               className="absolute left-0 w-0.5 h-7 bg-linear-to-b from-[#20BCE5] via-[#20BCE5] to-[#0866C6] rounded-full shadow-[0_0_12px_rgba(32,188,229,0.85)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
-              style={{
-                transform: `translateY(${activeService * 52}px)`,
-              }}
+              style={{ transform: `translateY(${active * 52}px)` }}
               aria-hidden="true"
             />
 
             <div className="space-y-6">
-              {services.map((service, index) => {
-                const isActive = activeService === index;
-                const diff = index - activeService;
-
-                const itemScale = isActive ? 1.03 : 0.98;
-                const itemOpacity = isActive ? 1 : Math.max(0.45, 0.72 - Math.abs(diff) * 0.1);
+              {services.map((item, index) => {
+                const isActive = active === index;
+                const distance = Math.abs(index - active);
+                const scale = isActive ? 1.03 : 0.98;
+                const opacity = isActive ? 1 : Math.max(0.45, 0.72 - distance * 0.1);
 
                 return (
                   <button
-                    key={service.number}
+                    key={item.number}
                     type="button"
-                    onClick={() => handleServiceClick(index)}
+                    onClick={() => selectService(index)}
                     data-active={isActive}
-                    className={`service-nav-item relative flex items-center h-7 w-full text-left text-sm uppercase tracking-[0.13em] cursor-pointer will-change-transform ${isActive ? "text-white font-semibold" : "text-[#94a3b8] hover:text-white"
-                      }`}
+                    className={`service-nav-item relative flex items-center h-7 w-full text-left text-sm uppercase tracking-[0.13em] cursor-pointer will-change-transform ${
+                      isActive ? "text-white font-semibold" : "text-[#94a3b8] hover:text-white"
+                    }`}
                     style={{
-                      transform: `scale(${itemScale})`,
-                      opacity: itemOpacity,
+                      transform: `scale(${scale})`,
+                      opacity,
                       transition:
                         "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, color 0.3s ease",
                     }}
@@ -277,14 +257,15 @@ export function ServicesShowcase() {
                   >
                     <div className="flex items-center">
                       <span
-                        className={`mr-4 font-mono transition-all duration-300 ${isActive
+                        className={`mr-4 font-mono transition-all duration-300 ${
+                          isActive
                             ? "text-[#20BCE5] font-bold drop-shadow-[0_0_8px_rgba(32,188,229,0.55)]"
                             : "text-[#20BCE5]/70"
-                          }`}
+                        }`}
                       >
-                        {service.number}
+                        {item.number}
                       </span>
-                      <span className="transition-colors duration-300">{service.name}</span>
+                      <span className="transition-colors duration-300">{item.name}</span>
                     </div>
                   </button>
                 );
@@ -292,76 +273,77 @@ export function ServicesShowcase() {
             </div>
           </div>
         </div>
-      </div>
+      </aside>
 
-      {/* 2. Unified Showcase Visual & Content (Sticky on Desktop, Tablet & Mobile) */}
       <div className="relative w-full min-w-0">
-        <div ref={rightStickyRef} className="services-sticky-column w-full min-w-0">
-          {/* Mobile / Tablet Horizontal Service Indicator Pills */}
+        <div ref={stickyRef} className="services-sticky-column w-full min-w-0">
           <div className="relative w-full max-w-full overflow-hidden lg:hidden mb-3 sm:mb-4">
             <div
-              ref={mobilePillsContainerRef}
+              ref={pillTrackRef}
               className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth w-full min-w-0"
             >
-              {services.map((service, index) => {
-                const isActive = activeService === index;
+              {services.map((item, index) => {
+                const isActive = active === index;
                 return (
                   <button
-                    key={service.number}
+                    key={item.number}
                     ref={(el) => {
-                      mobilePillRefs.current[index] = el;
+                      pillRefs.current[index] = el;
                     }}
                     type="button"
-                    onClick={() => handleServiceClick(index)}
-                    className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer active:scale-95 ${isActive
+                    onClick={() => selectService(index)}
+                    className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer active:scale-95 ${
+                      isActive
                         ? "bg-[#0866C6]/50 border border-[#20BCE5] text-white shadow-[0_0_14px_rgba(32,188,229,0.4)] font-semibold scale-105"
                         : "bg-[#071A2D]/80 border border-white/10 text-[#94a3b8] hover:text-white"
-                      }`}
+                    }`}
                   >
                     <span className={isActive ? "text-[#20BCE5] font-bold" : "text-[#20BCE5]/70"}>
-                      {service.number}
+                      {item.number}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] uppercase tracking-wider">{service.name}</span>
+                    <span className="text-[10px] sm:text-[11px] uppercase tracking-wider">
+                      {item.name}
+                    </span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Sticky Visual Showcase with Parallax Float & Touch Swipe */}
           <div
-            onMouseEnter={() => setIsVideoHovered(true)}
-            onMouseLeave={() => setIsVideoHovered(false)}
-            onPointerEnter={() => setIsVideoHovered(true)}
-            onPointerLeave={() => setIsVideoHovered(false)}
-            onClick={() => setIsVideoHovered((prev) => !prev)}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onPointerEnter={() => setHovered(true)}
+            onPointerLeave={() => setHovered(false)}
+            onClick={() => setHovered((prev) => !prev)}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
             data-cursor-hover
             data-cursor-label="PLAY"
-            className={`group relative z-10 aspect-300/277 sm:aspect-16/10 max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-60 sm:min-h-70 w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${isVideoHovered
+            className={`group relative z-10 aspect-300/277 sm:aspect-16/10 max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-60 sm:min-h-70 w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${
+              hovered
                 ? "border-0 lg:border lg:border-[#20BCE5]/60 lg:shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
                 : "border-0 lg:border lg:border-[#20BCE5]/25 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
-              }`}
+            }`}
             style={{
               transform: "translate3d(0, var(--parallax-y, 0px), 0)",
-              transition: "transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease",
+              transition:
+                "transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease",
             }}
           >
-            {/* Sliding Vertical Video Reel with Inner Vertical Parallax */}
             <div
               className="absolute inset-x-0 top-0 w-full flex flex-col will-change-transform motion-reduce:transition-none"
               style={{
                 height: `${services.length * 100}%`,
-                transform: `translate3d(0, -${(activeService * 100) / services.length}%, 0)`,
+                transform: `translate3d(0, -${(active * 100) / services.length}%, 0)`,
                 transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
-              {services.map((service, index) => {
-                const diff = index - activeService;
+              {services.map((item, index) => {
+                const diff = index - active;
                 return (
                   <div
-                    key={service.number}
+                    key={item.number}
                     className="relative w-full shrink-0 overflow-hidden"
                     style={{ height: `${100 / services.length}%` }}
                   >
@@ -369,14 +351,14 @@ export function ServicesShowcase() {
                       ref={(el) => {
                         videoRefs.current[index] = el;
                       }}
-                      src={service.video}
+                      src={item.video}
                       loop
                       muted
                       playsInline
                       preload="auto"
                       className="service-visual size-full object-cover object-center will-change-transform transition-transform duration-700 ease-out"
                       style={{
-                        transform: `translate3d(0, ${diff * 8}%, 0) scale(${index === activeService ? 1 : 1.05})`,
+                        transform: `translate3d(0, ${diff * 8}%, 0) scale(${index === active ? 1 : 1.05})`,
                       }}
                       data-cursor-hover
                       data-cursor-label="PLAY"
@@ -386,70 +368,69 @@ export function ServicesShowcase() {
               })}
             </div>
 
-            {/* Hover to Play State Indicator Pill (Desktop only) */}
             <div
-              className={`pointer-events-none absolute right-2.5 top-2.5 sm:right-4 sm:top-4 z-20 hidden lg:flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 py-1 sm:px-3 sm:py-1.5 backdrop-blur-md transition-all duration-300 ${isVideoHovered
+              className={`pointer-events-none absolute right-2.5 top-2.5 sm:right-4 sm:top-4 z-20 hidden lg:flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 py-1 sm:px-3 sm:py-1.5 backdrop-blur-md transition-all duration-300 ${
+                hovered
                   ? "border-[#20BCE5]/40 bg-[#0866C6]/40 shadow-[0_0_16px_rgba(32,188,229,0.3)] opacity-95"
                   : "bg-[#071A2D]/85 opacity-85 shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                }`}
+              }`}
             >
               <span className="relative flex size-1.5 sm:size-2">
-                {isVideoHovered && (
+                {hovered && (
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#20BCE5] opacity-75" />
                 )}
                 <span
-                  className={`relative inline-flex size-1.5 sm:size-2 rounded-full transition-colors duration-300 ${isVideoHovered ? "bg-[#20BCE5]" : "bg-slate-400"
-                    }`}
+                  className={`relative inline-flex size-1.5 sm:size-2 rounded-full transition-colors duration-300 ${
+                    hovered ? "bg-[#20BCE5]" : "bg-slate-400"
+                  }`}
                 />
               </span>
               <span className="text-[9px] sm:text-[10px] font-mono font-medium tracking-wider uppercase text-white/90 whitespace-nowrap">
-                {isVideoHovered ? "Playing" : "Preview"}
+                {hovered ? "Playing" : "Preview"}
               </span>
             </div>
 
-            {/* Vignette Gradient Overlay */}
             <div className="pointer-events-none absolute inset-0 z-10 bg-linear-to-t from-[#040A14]/92 via-transparent to-transparent" />
 
-            {/* Overlay Text & Arrow Icon */}
             <div className="pointer-events-none absolute bottom-3.5 left-3.5 right-3.5 z-20 flex items-end justify-between sm:bottom-6 sm:left-6 sm:right-6 md:bottom-8 md:left-8 md:right-8">
               <div className="flex-1 min-w-0 pr-3 sm:pr-4">
-                {/* Vertical Sliding Service Number */}
                 <div className="relative h-4 sm:h-5 w-full overflow-hidden mb-1 sm:mb-2">
-                  {services.map((service, index) => {
-                    const diff = index - activeService;
-                    const isActive = activeService === index;
+                  {services.map((item, index) => {
+                    const diff = index - active;
+                    const isActive = active === index;
                     return (
                       <p
-                        key={service.number}
-                        className={`absolute inset-0 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] text-[#D57A1C] lg:text-[#20BCE5] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                        key={item.number}
+                        className={`absolute inset-0 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] text-[#D57A1C] lg:text-[#20BCE5] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                          isActive
                             ? "opacity-100 translate-y-0"
                             : diff > 0
                               ? "opacity-0 translate-y-full"
                               : "opacity-0 -translate-y-full"
-                          }`}
+                        }`}
                       >
-                        {service.number}
+                        {item.number}
                       </p>
                     );
                   })}
                 </div>
 
-                {/* Vertical Sliding Service Name */}
                 <div className="relative h-8 sm:h-10 md:h-14 lg:h-16 w-full overflow-hidden">
-                  {services.map((service, index) => {
-                    const diff = index - activeService;
-                    const isActive = activeService === index;
+                  {services.map((item, index) => {
+                    const diff = index - active;
+                    const isActive = active === index;
                     return (
                       <h3
-                        key={service.number}
-                        className={`absolute inset-0 display-font text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                        key={item.number}
+                        className={`absolute inset-0 display-font text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                          isActive
                             ? "opacity-100 translate-y-0"
                             : diff > 0
                               ? "opacity-0 translate-y-full"
                               : "opacity-0 -translate-y-full"
-                          }`}
+                        }`}
                       >
-                        {service.name}
+                        {item.name}
                       </h3>
                     );
                   })}
@@ -460,10 +441,9 @@ export function ServicesShowcase() {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const el = document.getElementById("enquiry");
-                  el?.scrollIntoView({ behavior: "smooth" });
+                  document.getElementById("enquiry")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                aria-label={`Enquire about ${services[activeService].name}`}
+                aria-label={`Enquire about ${services[active].name}`}
                 className="pointer-events-auto hidden lg:flex size-8 sm:size-10 md:size-11 place-items-center justify-center rounded-full border border-white/30 transition-all duration-300 hover:scale-110 hover:border-[#20BCE5] hover:bg-[#071A2D]/90 hover:shadow-[0_0_20px_rgba(32,188,229,0.35)] active:scale-95 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#20BCE5]"
               >
                 <ArrowDownRight className="size-3.5 sm:size-4 md:size-5 text-white" />
@@ -471,48 +451,47 @@ export function ServicesShowcase() {
             </div>
           </div>
 
-          {/* Mobile Divider Line (< 1024px) */}
           <div className="w-full border-t border-white/10 lg:hidden mt-7 mb-7 sm:mt-8 sm:mb-8" />
 
-          {/* Mobile Active Service Description (< 1024px) */}
           <div className="lg:hidden relative min-h-18 w-full min-w-0">
-            {services.map((service, index) => {
-              const diff = index - activeService;
-              const isActive = activeService === index;
+            {services.map((item, index) => {
+              const diff = index - active;
+              const isActive = active === index;
               return (
                 <div
-                  key={service.number}
-                  className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                  key={item.number}
+                  className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    isActive
                       ? "opacity-100 translate-y-0 relative"
                       : diff > 0
                         ? "opacity-0 translate-y-4 pointer-events-none absolute inset-x-0 top-0"
                         : "opacity-0 -translate-y-4 pointer-events-none absolute inset-x-0 top-0"
-                    }`}
+                  }`}
                 >
                   <p className="text-sm sm:text-base leading-relaxed text-[#9e988f] max-w-md">
-                    {service.description}
+                    {item.description}
                   </p>
                 </div>
               );
             })}
           </div>
 
-          {/* Desktop Active Service Description (>= 1024px) */}
           <div className="hidden lg:block relative min-h-13 sm:min-h-15 mt-3 sm:mt-4 w-full min-w-0 overflow-hidden">
-            {services.map((service, index) => {
-              const diff = index - activeService;
-              const isActive = activeService === index;
+            {services.map((item, index) => {
+              const diff = index - active;
+              const isActive = active === index;
               return (
                 <p
-                  key={service.number}
-                  className={`absolute inset-x-0 top-0 w-full max-w-full text-xs sm:text-sm md:text-base leading-relaxed text-[#94a3b8] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                  key={item.number}
+                  className={`absolute inset-x-0 top-0 w-full max-w-full text-xs sm:text-sm md:text-base leading-relaxed text-[#94a3b8] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    isActive
                       ? "opacity-100 translate-y-0"
                       : diff > 0
                         ? "opacity-0 translate-y-4 pointer-events-none"
                         : "opacity-0 -translate-y-4 pointer-events-none"
-                    }`}
+                  }`}
                 >
-                  {service.description}
+                  {item.description}
                 </p>
               );
             })}

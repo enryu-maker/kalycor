@@ -2,13 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import brandLogo from "@/assets/logo.png";
 
-const exploreLinks = [
+const EXPLORE_LINKS = [
   { name: "Who We Are", href: "#who-we-are" },
   { name: "Services", href: "#services" },
   { name: "Enquiry", href: "#enquiry" },
 ];
 
-const serviceLinks = [
+const SERVICE_LINKS = [
   { name: "Staffing", href: "#services" },
   { name: "Real Estate", href: "#services" },
   { name: "Agriculture", href: "#services" },
@@ -19,31 +19,22 @@ const serviceLinks = [
 export function FooterSection() {
   return (
     <footer className="footer-glass relative overflow-hidden px-[var(--page-gutter)] py-16 md:py-24 text-white">
-      {/* Protective Base Barrier Layer matching Header */}
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0D1B2E]/95 via-[#0A1D31]/90 to-[#081421]/95"
         aria-hidden="true"
       />
-
-      {/* Specular Top Rim Reflection (White subtle highlight) */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
         aria-hidden="true"
       />
-
-      {/* Specular Top Rim Reflection (Cyan brand glow) */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#20BCE5]/35 to-transparent"
         aria-hidden="true"
       />
-
-      {/* Subtle Ambient Glass Surface Sheen */}
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent"
         aria-hidden="true"
       />
-
-      {/* Subtle Brand Ambient Radial Glow (Cyan & Royal Lighting) */}
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(8,102,198,0.22),transparent_60%),radial-gradient(circle_at_20%_80%,rgba(32,188,229,0.12),transparent_50%)]"
         aria-hidden="true"
@@ -80,7 +71,7 @@ export function FooterSection() {
             <div>
               <p className="eyebrow mb-5 text-[#20BCE5]">Explore</p>
               <div className="space-y-2.5">
-                {exploreLinks.map((link) => (
+                {EXPLORE_LINKS.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
@@ -95,7 +86,7 @@ export function FooterSection() {
             <div>
               <p className="eyebrow mb-5 text-[#20BCE5]">Services</p>
               <div className="space-y-2.5">
-                {serviceLinks.map((link) => (
+                {SERVICE_LINKS.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
@@ -109,10 +100,16 @@ export function FooterSection() {
 
             <div>
               <p className="eyebrow mb-5 text-[#20BCE5]">Contact</p>
-              <a className="line-link block text-[#94A3B8] transition-colors duration-300 hover:text-white" href="mailto:hello@kalycor.group">
+              <a
+                className="line-link block text-[#94A3B8] transition-colors duration-300 hover:text-white"
+                href="mailto:hello@kalycor.group"
+              >
                 hello@kalycor.group
               </a>
-              <a className="line-link mt-2.5 block text-[#94A3B8] transition-colors duration-300 hover:text-white" href="tel:+10000000000">
+              <a
+                className="line-link mt-2.5 block text-[#94A3B8] transition-colors duration-300 hover:text-white"
+                href="tel:+10000000000"
+              >
                 +1 000 000 0000
               </a>
             </div>
@@ -129,7 +126,12 @@ export function FooterSection() {
               <Link className="line-link hover:text-white transition-colors duration-300" href="#top">
                 Terms
               </Link>
-              <a className="line-link hover:text-white transition-colors duration-300" href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+              <a
+                className="line-link hover:text-white transition-colors duration-300"
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+              >
                 LinkedIn
               </a>
             </div>

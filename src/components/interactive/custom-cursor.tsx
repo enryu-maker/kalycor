@@ -1,44 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function CustomCursor() {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
+
   const [cursor, setCursor] = useState({
-    x: 0,
-    y: 0,
     hovering: false,
     label: false,
-    labelText: "EXPLORE",
+    text: "EXPLORE",
   });
 
   useEffect(() => {
-    const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerType !== "touch") {
-        setCursor((current) => ({ ...current, x: event.clientX, y: event.clientY }));
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+
+      const x = `${e.clientX}px`;
+      const y = `${e.clientY}px`;
+
+      if (dotRef.current) {
+        dotRef.current.style.left = x;
+        dotRef.current.style.top = y;
+      }
+      if (labelRef.current) {
+        labelRef.current.style.left = x;
+        labelRef.current.style.top = y;
       }
     };
 
-    const onMouseOver = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
       if (!target) return;
+
       const hoverEl = target.closest("[data-cursor-hover]");
       const labelEl = target.closest("[data-cursor-label]");
       const customLabel = labelEl?.getAttribute("data-cursor-label");
 
       if (hoverEl || labelEl) {
-        setCursor((c) => ({
-          ...c,
+        setCursor({
           hovering: true,
           label: Boolean(labelEl),
-          labelText: customLabel && customLabel.length > 0 ? customLabel : "EXPLORE",
-        }));
+          text: customLabel?.trim() || "EXPLORE",
+        });
       } else {
-        setCursor((c) => ({
-          ...c,
-          hovering: false,
-          label: false,
-          labelText: "EXPLORE",
-        }));
+        setCursor((prev) =>
+          prev.hovering ? { hovering: false, label: false, text: "EXPLORE" } : prev
+        );
       }
     };
 
@@ -54,16 +62,16 @@ export function CustomCursor() {
   return (
     <>
       <div
+        ref={dotRef}
         className={`cursor-dot ${cursor.hovering ? "is-hovering" : ""}`}
-        style={{ left: cursor.x, top: cursor.y }}
         aria-hidden="true"
       />
       <div
+        ref={labelRef}
         className={`cursor-label ${cursor.label ? "is-visible" : ""}`}
-        style={{ left: cursor.x, top: cursor.y }}
         aria-hidden="true"
       >
-        {cursor.labelText}
+        {cursor.text}
       </div>
     </>
   );

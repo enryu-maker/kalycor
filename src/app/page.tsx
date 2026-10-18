@@ -9,15 +9,17 @@ import { FooterSection } from "@/components/sections/footer-section";
 
 export default function HomePage() {
   return (
-    <main className="site-shell min-h-screen">
+    <div className="site-shell min-h-screen">
       <ScrollProgress />
       <CustomCursor />
       <Navbar />
-      <HeroSection />
-      <WhoWeAreSection />
-      <ServicesSection />
-      <EnquirySection />
+      <main id="main-content">
+        <HeroSection />
+        <WhoWeAreSection />
+        <ServicesSection />
+        <EnquirySection />
+      </main>
       <FooterSection />
-    </main>
+    </div>
   );
 }

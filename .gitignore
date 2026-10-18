@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI agent & testing artifacts
+AGENTS.md
+CLAUDE.md
+*AUDIT_REPORT.md
+build-output.txt
+/scratch/

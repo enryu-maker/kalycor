@@ -2,39 +2,36 @@ import Image from "next/image";
 import globalImage from "@/assets/hero-global.jpg";
 import { Users, Coins, Sparkles, HeartHandshake } from "lucide-react";
 
-export function WhoWeAreSection() {
-  const pillars = [
-    {
-      title: "People",
-      description: "Empowering talent and teams to drive organizations forward.",
-      icon: Users,
-    },
-    {
-      title: "Capital",
-      description: "Directing strategic investment into sustainable, high-value opportunities.",
-      icon: Coins,
-    },
-    {
-      title: "Expertise",
-      description: "Applying deep sector knowledge to solve complex operational challenges.",
-      icon: Sparkles,
-    },
-    {
-      title: "Care",
-      description: "Delivering lasting positive impact for the communities and markets we serve.",
-      icon: HeartHandshake,
-    },
-  ];
+const PILLARS = [
+  {
+    title: "People",
+    description: "Empowering talent and teams to drive organizations forward.",
+    icon: Users,
+  },
+  {
+    title: "Capital",
+    description: "Directing strategic investment into sustainable, high-value opportunities.",
+    icon: Coins,
+  },
+  {
+    title: "Expertise",
+    description: "Applying deep sector knowledge to solve complex operational challenges.",
+    icon: Sparkles,
+  },
+  {
+    title: "Care",
+    description: "Delivering lasting positive impact for the communities and markets we serve.",
+    icon: HeartHandshake,
+  },
+];
 
+export function WhoWeAreSection() {
   return (
     <section
       id="who-we-are"
       className="relative border-b border-[#d2e1f0] bg-[#f4f8fc] px-[var(--page-gutter)] py-28 md:py-40 text-[#071326] overflow-hidden"
     >
       <div className="relative z-10 mx-auto max-w-[1600px]">
-        {/* ==========================================================================
-            TOP EDITORIAL ROW: EYEBROW + MAIN HEADLINE & NARRATIVE
-            ========================================================================== */}
         <div className="grid gap-10 lg:grid-cols-[0.35fr_1.65fr] lg:gap-16">
           <div className="reveal-on-scroll">
             <p className="eyebrow flex items-center gap-2 font-semibold text-[#0866C6]">
@@ -58,9 +55,6 @@ export function WhoWeAreSection() {
           </div>
         </div>
 
-        {/* ==========================================================================
-            MIDDLE ROW: HERO ARCHITECTURAL VISUAL WITH BRAND FRAME
-            ========================================================================== */}
         <div className="reveal-on-scroll mt-16 md:mt-24">
           <div className="group relative aspect-[16/9] max-h-[540px] w-full overflow-hidden rounded-sm border border-[#d2e1f0] bg-[#071A2D] shadow-[0_20px_45px_rgba(7,26,45,0.12)]">
             <Image
@@ -72,10 +66,8 @@ export function WhoWeAreSection() {
               priority={false}
             />
 
-            {/* Gradient Vignette */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#02050B]/85 via-[#071A2D]/25 to-transparent" />
 
-            {/* Floating Glass Label */}
             <div className="pointer-events-none absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 md:bottom-10 md:left-10 md:right-10 flex flex-wrap items-end justify-between gap-4">
               <div className="max-w-full">
                 <span className="eyebrow mb-1.5 sm:mb-2 block text-[#20BCE5]">Global Perspective</span>
@@ -87,11 +79,8 @@ export function WhoWeAreSection() {
           </div>
         </div>
 
-        {/* ==========================================================================
-            BOTTOM ROW: CORE PILLARS (PEOPLE, CAPITAL, EXPERTISE, CARE)
-            ========================================================================== */}
         <div className="reveal-on-scroll mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((pillar) => {
+          {PILLARS.map((pillar) => {
             const Icon = pillar.icon;
             return (
               <div

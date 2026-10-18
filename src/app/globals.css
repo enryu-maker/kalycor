@@ -5,6 +5,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -25,7 +26,6 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Brand Palette Extension for Tailwind Utilities */
   --color-brand-royal: var(--brand-royal);
   --color-brand-royal-deep: var(--brand-royal-deep);
   --color-brand-cyan: var(--brand-cyan);
@@ -46,14 +46,6 @@
 :root {
   --radius: 0.375rem;
 
-  /* ==========================================================================
-     KALYCOR BRAND PALETTE (Calibrated directly to the Brand Logo)
-     - Royal Blue:  #0866C6 (Lower dynamic arc & brand strength)
-     - Cyan Blue:   #20BCE5 (Upper dynamic arc & forward arrow apex)
-     - Deep Navy:   #071A2D (Obsidian framing shield & deep surfaces)
-     - Light Ice:   #F5F9FF (Crisp editorial light canvas)
-     - Pure White:  #FFFFFF (Highlights & high-contrast typography)
-     ========================================================================== */
   --brand-royal: #0866C6;
   --brand-royal-deep: #064E99;
   --brand-royal-accent: #1178DE;
@@ -76,7 +68,6 @@
   --brand-cool-slate: #94A3B8;
   --brand-white: #FFFFFF;
 
-  /* Theme Tokens */
   --background: #030813;
   --foreground: #F8FAFC;
   --card: #071A2D;
@@ -97,7 +88,6 @@
   --input: rgba(32, 188, 229, 0.20);
   --ring: #20BCE5;
 
-  /* Spacing & Typography */
   --page-gutter: clamp(1.25rem, 4vw, 4.5rem);
   --display: var(--font-manrope), "Manrope", "DM Sans", sans-serif;
   --serif: var(--font-instrument-serif), "Instrument Serif", Georgia, serif;
@@ -131,10 +121,6 @@ html {
   color: #FFFFFF;
 }
 
-/* ==========================================================================
-   BRAND TYPOGRAPHY & STRUCTURAL UTILITIES
-   ========================================================================== */
-
 .site-shell {
   background: var(--color-background);
   color: var(--color-foreground);
@@ -148,74 +134,12 @@ html {
   font-family: var(--serif);
 }
 
-.section-rule {
-  border-color: var(--color-border);
-}
-
 .eyebrow {
   color: var(--brand-cyan);
   font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-
-/* ==========================================================================
-   BRAND GRADIENTS & VISUAL EFFECTS (Inspired by Kalycor Logo)
-   ========================================================================== */
-
-/* Brand Gradient Text (Royal to Cyan sheen) */
-.brand-gradient-text {
-  background: linear-gradient(135deg, #FFFFFF 0%, #6BE0FF 50%, #20BCE5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.brand-gradient-text-royal {
-  background: linear-gradient(135deg, #0866C6 0%, #20BCE5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Brand Gradient Backgrounds */
-.brand-gradient-bg {
-  background: linear-gradient(135deg, #0866C6 0%, #1579D6 50%, #20BCE5 100%);
-}
-
-.brand-gradient-bg-subtle {
-  background: linear-gradient(135deg, rgba(8, 102, 198, 0.12) 0%, rgba(32, 188, 229, 0.12) 100%);
-}
-
-.brand-gradient-dark {
-  background: linear-gradient(180deg, #071A2D 0%, #030813 100%);
-}
-
-/* Premium Glass & Borders */
-.brand-glass-card {
-  background: rgba(7, 26, 45, 0.72);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(32, 188, 229, 0.15);
-  box-shadow: 0 16px 36px -10px rgba(2, 5, 11, 0.65);
-}
-
-.brand-glass-card:hover {
-  border-color: rgba(32, 188, 229, 0.35);
-  box-shadow: 0 20px 40px -10px rgba(8, 102, 198, 0.35);
-}
-
-.brand-glow-cyan {
-  box-shadow: 0 0 24px rgba(32, 188, 229, 0.35);
-}
-
-.brand-glow-royal {
-  box-shadow: 0 0 24px rgba(8, 102, 198, 0.40);
-}
-
-/* ==========================================================================
-   NAVIGATION & SCROLL EFFECTS
-   ========================================================================== */
 
 .nav-glass {
   background: linear-gradient(180deg,
@@ -281,10 +205,6 @@ html {
   transform-origin: left;
 }
 
-/* ==========================================================================
-   ANIMATIONS & TRANSITIONS
-   ========================================================================== */
-
 .word-reveal {
   animation: rise-in 0.9s cubic-bezier(0.2, 0.75, 0.2, 1) both;
   animation-delay: var(--delay, 0ms);
@@ -335,6 +255,10 @@ html {
   transition: transform 0.8s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
+.service-visual:hover {
+  transform: scale(1.025);
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -344,29 +268,17 @@ html {
   scrollbar-width: none;
 }
 
-.service-visual:hover {
-  transform: scale(1.025);
-}
-
-.service-nav-item {
-  color: var(--brand-cool-slate, #94A3B8);
-  transition: color 0.35s ease, padding 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
-}
-
 .service-nav-item {
   position: relative;
+  color: var(--brand-cool-slate, #94A3B8);
   transition: color 0.3s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 
-.service-nav-item:hover {
-  color: #FFFFFF;
-}
-
+.service-nav-item:hover,
 .service-nav-item[data-active="true"] {
   color: #FFFFFF;
 }
 
-/* Services Showcase Layout & Scroll Sticking */
 .services-showcase-container {
   display: grid;
   gap: 1.5rem;
@@ -404,11 +316,6 @@ html {
   top: 7rem;
 }
 
-.services-nav-column {
-  position: sticky;
-  top: 7rem;
-}
-
 .form-field {
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
   transition: border-color 0.35s ease;
@@ -425,10 +332,6 @@ html {
   outline: none;
   width: 100%;
 }
-
-/* ==========================================================================
-   CUSTOM CURSOR
-   ========================================================================== */
 
 .cursor-dot {
   position: fixed;
@@ -468,10 +371,6 @@ html {
   opacity: 1;
 }
 
-/* ==========================================================================
-   KEYFRAME DEFINITIONS
-   ========================================================================== */
-
 @keyframes rise-in {
   from {
     opacity: 0;
@@ -496,22 +395,7 @@ html {
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/* ==========================================================================
-   MEDIA QUERIES
-   ========================================================================== */
-
 @media (max-width: 767px) {
-
   .cursor-dot,
   .cursor-label {
     display: none;
