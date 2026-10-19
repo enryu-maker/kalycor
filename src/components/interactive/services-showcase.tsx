@@ -131,7 +131,7 @@ export function ServicesShowcase() {
           const totalDist = el.offsetHeight + winH;
           const currentDist = winH - rect.top;
           const progress = Math.max(0, Math.min(1, currentDist / totalDist));
-          const parallax = (progress - 0.5) * -16;
+          const parallax = isDesktop ? (progress - 0.5) * -16 : 0;
 
           el.style.setProperty("--services-progress", progress.toFixed(4));
           el.style.setProperty("--parallax-y", `${parallax.toFixed(2)}px`);
@@ -400,7 +400,7 @@ export function ServicesShowcase() {
               </span>
             </div>
 
-            <div className="pointer-events-none absolute inset-0 z-10 bg-linear-to-t from-[#040A14]/92 via-transparent to-transparent" />
+            <div className="absolute inset-0 z-10 bg-linear-to-t from-[#040A14]/92 via-transparent to-transparent pointer-events-auto" />
 
             <div className="pointer-events-none absolute bottom-3.5 left-3.5 right-3.5 z-20 flex items-end justify-between sm:bottom-6 sm:left-6 sm:right-6 md:bottom-8 md:left-8 md:right-8">
               <div className="flex-1 min-w-0 pr-3 sm:pr-4">
