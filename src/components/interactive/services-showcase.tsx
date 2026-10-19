@@ -61,6 +61,15 @@ export function ServicesShowcase() {
   const prefersReducedMotion = useRef(false);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     prefersReducedMotion.current = mq.matches;
@@ -323,60 +332,101 @@ export function ServicesShowcase() {
             onTouchEnd={onTouchEnd}
             data-cursor-hover
             data-cursor-label="PLAY"
-            className={`group relative z-10 h-[50vh] min-h-[380px] max-h-[480px] sm:h-auto sm:aspect-16/10 sm:max-h-[calc(100vh-16rem)] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${
+            className={`group relative z-10 h-[50vh] min-h-[380px] max-h-[480px] sm:h-auto sm:aspect-16/10 sm:max-h-[calc(100vh-16rem)] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer transition-[border-color,box-shadow] duration-400 ${
               hovered
                 ? "border-0 lg:border lg:border-[#20BCE5]/60 lg:shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
                 : "border-0 lg:border lg:border-[#20BCE5]/25 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
             }`}
-            style={{
-              transform: "translate3d(0, var(--parallax-y, 0px), 0)",
-              transition:
-                "transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease",
-            }}
+            style={
+              isDesktop
+                ? {
+                    transform: "translate3d(0, var(--parallax-y, 0px), 0)",
+                    transition:
+                      "transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease",
+                  }
+                : {
+                    transition: "border-color 0.4s ease, box-shadow 0.4s ease",
+                  }
+            }
           >
-            <div
-              className="absolute inset-x-0 top-0 w-full flex flex-col will-change-transform motion-reduce:transition-none"
-              style={{
-                height: `${services.length * 100}%`,
-                transform: `translate3d(0, -${(active * 100) / services.length}%, 0)`,
-                transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-            >
-              {services.map((item, index) => {
-                const diff = index - active;
-                return (
-                  <div
-                    key={item.number}
-                    className="relative w-full shrink-0 overflow-hidden"
-                    style={{ height: `${100 / services.length}%` }}
-                  >
-                    <video
-                      ref={(el) => {
-                        videoRefs.current[index] = el;
-                        if (el) {
-                          el.disablePictureInPicture = true;
-                          el.disableRemotePlayback = true;
-                        }
-                      }}
-                      src={item.video}
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      controlsList="nodownload nofullscreen noremoteplayback"
-                      disablePictureInPicture
-                      disableRemotePlayback
-                      className="service-visual pointer-events-none size-full object-cover object-center will-change-transform transition-transform duration-700 ease-out"
-                      style={{
-                        transform: `translate3d(0, ${diff * 8}%, 0) scale(${index === active ? 1 : 1.05})`,
-                      }}
-                      data-cursor-hover
-                      data-cursor-label="PLAY"
-                    />
-                  </div>
-                );
-              })}
-            </div>
+            {isDesktop ? (
+              <div
+                className="absolute inset-x-0 top-0 w-full flex flex-col will-change-transform motion-reduce:transition-none"
+                style={{
+                  height: `${services.length * 100}%`,
+                  transform: `translate3d(0, -${(active * 100) / services.length}%, 0)`,
+                  transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
+              >
+                {services.map((item, index) => {
+                  const diff = index - active;
+                  return (
+                    <div
+                      key={item.number}
+                      className="relative w-full shrink-0 overflow-hidden"
+                      style={{ height: `${100 / services.length}%` }}
+                    >
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[index] = el;
+                          if (el) {
+                            el.disablePictureInPicture = true;
+                            el.disableRemotePlayback = true;
+                          }
+                        }}
+                        src={item.video}
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        controlsList="nodownload nofullscreen noremoteplayback"
+                        disablePictureInPicture
+                        disableRemotePlayback
+                        className="service-visual pointer-events-none size-full object-cover object-center will-change-transform transition-transform duration-700 ease-out"
+                        style={{
+                          transform: `translate3d(0, ${diff * 8}%, 0) scale(${index === active ? 1 : 1.05})`,
+                        }}
+                        data-cursor-hover
+                        data-cursor-label="PLAY"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="absolute inset-0 size-full overflow-hidden">
+                {services.map((item, index) => {
+                  const isCurrent = index === active;
+                  return (
+                    <div
+                      key={item.number}
+                      className={`absolute inset-0 size-full transition-opacity duration-500 ease-out ${
+                        isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                      }`}
+                    >
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[index] = el;
+                          if (el) {
+                            el.disablePictureInPicture = true;
+                            el.disableRemotePlayback = true;
+                          }
+                        }}
+                        src={item.video}
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        controlsList="nodownload nofullscreen noremoteplayback"
+                        disablePictureInPicture
+                        disableRemotePlayback
+                        className="service-visual pointer-events-none size-full object-cover object-center"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             <div
               className={`pointer-events-none absolute right-2.5 top-2.5 sm:right-4 sm:top-4 z-20 hidden lg:flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 py-1 sm:px-3 sm:py-1.5 backdrop-blur-md transition-all duration-300 ${
