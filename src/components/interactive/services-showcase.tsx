@@ -283,7 +283,7 @@ export function ServicesShowcase() {
           <div className="relative w-full max-w-full lg:hidden mb-3.5 sm:mb-4">
             <div
               ref={pillTrackRef}
-              className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 py-1 w-full max-w-[340px] sm:max-w-none mx-auto"
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar px-1.5 py-1.5 scroll-smooth w-full min-w-0"
             >
               {services.map((item, index) => {
                 const isActive = active === index;
@@ -295,9 +295,9 @@ export function ServicesShowcase() {
                     }}
                     type="button"
                     onClick={() => selectService(index)}
-                    className={`flex items-center gap-1 rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-mono tracking-wider transition-all duration-200 cursor-pointer active:scale-95 ${
+                    className={`shrink-0 flex items-center gap-1.5 rounded-full px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer active:scale-95 ${
                       isActive
-                        ? "bg-[#0866C6]/50 border border-[#20BCE5] text-white shadow-[0_0_12px_rgba(32,188,229,0.45)] ring-1 ring-[#20BCE5]/40 font-semibold"
+                        ? "bg-[#0866C6]/50 border border-[#20BCE5] text-white shadow-[0_0_14px_rgba(32,188,229,0.4)] font-semibold scale-105"
                         : "bg-[#071A2D]/80 border border-white/10 text-[#94a3b8] hover:text-white"
                     }`}
                   >
@@ -323,7 +323,7 @@ export function ServicesShowcase() {
             onTouchEnd={onTouchEnd}
             data-cursor-hover
             data-cursor-label="PLAY"
-            className={`group relative z-10 aspect-[4/4.6] sm:aspect-16/10 min-h-[360px] sm:min-h-70 max-h-[520px] sm:max-h-[calc(100vh-16rem)] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${
+            className={`group relative z-10 h-[50vh] min-h-[380px] max-h-[480px] sm:h-auto sm:aspect-16/10 sm:max-h-[calc(100vh-16rem)] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${
               hovered
                 ? "border-0 lg:border lg:border-[#20BCE5]/60 lg:shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
                 : "border-0 lg:border lg:border-[#20BCE5]/25 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
@@ -461,9 +461,9 @@ export function ServicesShowcase() {
             </div>
           </div>
 
-          <div className="w-full border-t border-white/10 lg:hidden mt-4 mb-3.5 sm:mt-6 sm:mb-6" />
+          <div className="w-full border-t border-white/10 lg:hidden mt-2.5 mb-2 sm:mt-6 sm:mb-6" />
 
-          <div className="lg:hidden relative min-h-14 sm:min-h-18 w-full min-w-0">
+          <div className="lg:hidden relative min-h-12 sm:min-h-18 w-full min-w-0">
             {services.map((item, index) => {
               const diff = index - active;
               const isActive = active === index;
@@ -478,7 +478,7 @@ export function ServicesShowcase() {
                         : "opacity-0 -translate-y-4 pointer-events-none absolute inset-x-0 top-0"
                   }`}
                 >
-                  <p className="text-sm sm:text-base leading-relaxed text-[#9e988f] max-w-md">
+                  <p className="text-xs sm:text-base leading-relaxed text-[#94a3b8] max-w-md">
                     {item.description}
                   </p>
                 </div>

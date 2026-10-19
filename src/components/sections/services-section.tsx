@@ -5,7 +5,7 @@ export function ServicesSection() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative w-full max-w-full overflow-clip scroll-mt-16 sm:scroll-mt-20 md:scroll-mt-24 border-b border-[#0866C6]/20 bg-gradient-to-b from-[#030813] via-[#071A2D]/70 to-[#030813] px-[var(--page-gutter)] py-14 sm:py-20 lg:py-36 text-white"
+      className="relative w-full max-w-full overflow-clip scroll-mt-16 sm:scroll-mt-20 md:scroll-mt-24 border-b border-[#0866C6]/20 bg-gradient-to-b from-[#030813] via-[#071A2D]/70 to-[#030813] px-[var(--page-gutter)] pt-10 pb-6 sm:py-20 lg:py-36 text-white"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute right-[8%] top-[15%] h-[600px] w-[700px] rounded-full bg-[#0866C6]/15 blur-[160px] transition-transform duration-1000 ease-out" />

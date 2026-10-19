@@ -300,8 +300,8 @@ video::-webkit-media-controls-download-button {
   position: relative;
   width: 100%;
   min-width: 0;
-  min-height: calc(100vh + 800px);
-  height: calc(100vh + 800px);
+  min-height: calc(100vh + 450px);
+  height: calc(100vh + 450px);
 }
 
 @media (min-width: 1024px) {
