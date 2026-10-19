@@ -150,11 +150,14 @@ export function ServicesShowcase() {
   }, []);
 
   useEffect(() => {
-    pillRefs.current[active]?.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
-    });
+    const track = pillTrackRef.current;
+    if (track && track.scrollWidth > track.clientWidth) {
+      pillRefs.current[active]?.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
   }, [active]);
 
   useEffect(() => {
@@ -277,10 +280,10 @@ export function ServicesShowcase() {
 
       <div className="relative w-full min-w-0">
         <div ref={stickyRef} className="services-sticky-column w-full min-w-0">
-          <div className="relative w-full max-w-full overflow-hidden lg:hidden mb-3 sm:mb-4">
+          <div className="relative w-full max-w-full lg:hidden mb-3.5 sm:mb-4">
             <div
               ref={pillTrackRef}
-              className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth w-full min-w-0"
+              className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 py-1 w-full max-w-[340px] sm:max-w-none mx-auto"
             >
               {services.map((item, index) => {
                 const isActive = active === index;
@@ -292,16 +295,16 @@ export function ServicesShowcase() {
                     }}
                     type="button"
                     onClick={() => selectService(index)}
-                    className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer active:scale-95 ${
+                    className={`flex items-center gap-1 rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-mono tracking-wider transition-all duration-200 cursor-pointer active:scale-95 ${
                       isActive
-                        ? "bg-[#0866C6]/50 border border-[#20BCE5] text-white shadow-[0_0_14px_rgba(32,188,229,0.4)] font-semibold scale-105"
+                        ? "bg-[#0866C6]/50 border border-[#20BCE5] text-white shadow-[0_0_12px_rgba(32,188,229,0.45)] ring-1 ring-[#20BCE5]/40 font-semibold"
                         : "bg-[#071A2D]/80 border border-white/10 text-[#94a3b8] hover:text-white"
                     }`}
                   >
                     <span className={isActive ? "text-[#20BCE5] font-bold" : "text-[#20BCE5]/70"}>
                       {item.number}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] uppercase tracking-wider">
+                    <span className="text-[10px] sm:text-[11px] uppercase tracking-wider whitespace-nowrap">
                       {item.name}
                     </span>
                   </button>
@@ -320,7 +323,7 @@ export function ServicesShowcase() {
             onTouchEnd={onTouchEnd}
             data-cursor-hover
             data-cursor-label="PLAY"
-            className={`group relative z-10 aspect-300/277 sm:aspect-16/10 max-h-[calc(100vh-14rem)] sm:max-h-[calc(100vh-16rem)] min-h-60 sm:min-h-70 w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${
+            className={`group relative z-10 aspect-[4/4.6] sm:aspect-16/10 min-h-[360px] sm:min-h-70 max-h-[520px] sm:max-h-[calc(100vh-16rem)] w-full min-w-0 overflow-hidden rounded-none lg:rounded-sm bg-[#040A14]/94 backdrop-blur-md cursor-pointer will-change-transform transition-[border-color,box-shadow] duration-400 ${
               hovered
                 ? "border-0 lg:border lg:border-[#20BCE5]/60 lg:shadow-[0_28px_60px_rgba(32,188,229,0.25)]"
                 : "border-0 lg:border lg:border-[#20BCE5]/25 shadow-[0_12px_30px_rgba(0,0,0,0.6)] lg:shadow-[0_24px_50px_rgba(2,6,12,0.85)]"
@@ -350,13 +353,20 @@ export function ServicesShowcase() {
                     <video
                       ref={(el) => {
                         videoRefs.current[index] = el;
+                        if (el) {
+                          el.disablePictureInPicture = true;
+                          el.disableRemotePlayback = true;
+                        }
                       }}
                       src={item.video}
                       loop
                       muted
                       playsInline
                       preload="auto"
-                      className="service-visual size-full object-cover object-center will-change-transform transition-transform duration-700 ease-out"
+                      controlsList="nodownload nofullscreen noremoteplayback"
+                      disablePictureInPicture
+                      disableRemotePlayback
+                      className="service-visual pointer-events-none size-full object-cover object-center will-change-transform transition-transform duration-700 ease-out"
                       style={{
                         transform: `translate3d(0, ${diff * 8}%, 0) scale(${index === active ? 1 : 1.05})`,
                       }}
@@ -451,9 +461,9 @@ export function ServicesShowcase() {
             </div>
           </div>
 
-          <div className="w-full border-t border-white/10 lg:hidden mt-7 mb-7 sm:mt-8 sm:mb-8" />
+          <div className="w-full border-t border-white/10 lg:hidden mt-4 mb-3.5 sm:mt-6 sm:mb-6" />
 
-          <div className="lg:hidden relative min-h-18 w-full min-w-0">
+          <div className="lg:hidden relative min-h-14 sm:min-h-18 w-full min-w-0">
             {services.map((item, index) => {
               const diff = index - active;
               const isActive = active === index;

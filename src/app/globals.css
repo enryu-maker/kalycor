@@ -279,14 +279,29 @@ html {
   color: #FFFFFF;
 }
 
+/* Hide browser-injected floating media controls & video assistants */
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-picture-in-picture-button,
+video::-webkit-media-controls-download-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .services-showcase-container {
   display: grid;
   gap: 1.5rem;
   position: relative;
   width: 100%;
   min-width: 0;
-  min-height: calc(100vh + 1500px);
-  height: calc(100vh + 1500px);
+  min-height: calc(100vh + 800px);
+  height: calc(100vh + 800px);
 }
 
 @media (min-width: 1024px) {

@@ -87,6 +87,8 @@ export function HeroSection() {
         muted
         playsInline
         preload="auto"
+        controlsList="nodownload nofullscreen noremoteplayback"
+        disablePictureInPicture
         aria-hidden="true"
         tabIndex={-1}
         className="absolute inset-0 size-full object-cover object-center opacity-70 pointer-events-none"
